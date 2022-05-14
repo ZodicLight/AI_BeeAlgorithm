@@ -12,6 +12,9 @@ public class Mothership : MonoBehaviour {
     //Resource Harvesting Variables
     public List<GameObject> drones = new List<GameObject>();
     public List<GameObject> scouts = new List<GameObject>();
+    public List<GameObject> eliteForagers = new List<GameObject>();//elite foragers 
+    public List<GameObject> foragers = new List<GameObject>();
+
     public int maxScouts = 4;
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -31,7 +34,7 @@ public class Mothership : MonoBehaviour {
 
             Vector3 spawnPosition = spawnLocation.transform.position;
 
-            spawnPosition.x = spawnPosition.x + Random.Range(-50, 50);//why is Random?
+            spawnPosition.x = spawnPosition.x + Random.Range(-50, 50);
             spawnPosition.y = spawnPosition.y + Random.Range(-50, 50);
             spawnPosition.z = spawnPosition.z + Random.Range(-50, 50);
 
@@ -46,7 +49,7 @@ public class Mothership : MonoBehaviour {
     void Update() {
 
         //(Re)Initialise Scouts Continuously
-        if (scouts.Count < maxScouts)
+        if (scouts.Count < maxScouts)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
         {
 
             scouts.Add(drones[0]);
@@ -64,10 +67,15 @@ public class Mothership : MonoBehaviour {
                 return (b.GetComponent<Asteroid>().resource).CompareTo(a.GetComponent<Asteroid>().resource);
             });
 
-            forageTimer = Time.time + forageTime;
+            drones.Sort(delegate (GameObject a, GameObject b)//?is this good the good area to check this?
+            {
+                return (b.GetComponent<Drone>().dronefuel).CompareTo(a.GetComponent<Drone>().dronefuel);
+            });
+
+           forageTimer = Time.time + forageTime;
         }
 
-
+       
 
 
     }

@@ -28,9 +28,10 @@ public class Drone : Enemy {
     public enum DroneBehaviours
     {
         Idle,
-        Scouting,
-        Foraging,
-        Attacking//WS8
+        Scouting,//W7
+        Foraging,//WS7
+        Attacking,//WS8
+        Fleeing//WS8
     }
 
     public DroneBehaviours droneBehaviour;
@@ -92,6 +93,9 @@ public class Drone : Enemy {
         {
 
             case DroneBehaviours.Scouting:
+                Scouting();
+                break;
+            case DroneBehaviours.Foraging:
                 Scouting();
                 break;
             case DroneBehaviours.Attacking:
