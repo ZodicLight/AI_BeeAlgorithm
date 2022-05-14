@@ -53,6 +53,8 @@ public class Drone : Enemy {
     private Vector3 attackPos;
     private float distanceRatio = 0.05f;
 
+    private int fuel;
+
 
     // Use this for initialization
     void Start() {
