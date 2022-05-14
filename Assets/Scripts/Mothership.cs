@@ -56,7 +56,7 @@ public class Mothership : MonoBehaviour {
         }
 
         //*** (Re)Determine best resource objects periodically 
-        if (resourceObjects.Count > 0 && Time.time > forageTimer)
+        if (resourceObjects.Count > 0 && Time.time > forageTimer)//every ten second?
         {
 
             //Sort resource objects delegated by their resource amount in decreasing order

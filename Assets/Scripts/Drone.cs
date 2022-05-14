@@ -53,7 +53,7 @@ public class Drone : Enemy {
     private Vector3 attackPos;
     private float distanceRatio = 0.05f;
 
-    private int fuel;
+    public int dronefuel;
 
 
     // Use this for initialization
@@ -65,6 +65,8 @@ public class Drone : Enemy {
 
         motherShip = gameManager.alienMothership;
         scoutPosition = motherShip.transform.position;
+
+        dronefuel = Random.Range(8000, 10000);
 
 
     }
@@ -152,8 +154,8 @@ public class Drone : Enemy {
     }
 
     private void MoveTowardsTarget(Vector3 targetPos) {//this i sthe code to find target 
+        
         //Rotate and move towards target if out of range
-
         if (Vector3.Distance(targetPos, transform.position) > targetRadius) {
 
             //Lerp Towards target
@@ -163,6 +165,9 @@ public class Drone : Enemy {
 
             rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
         }
+
+        dronefuel = dronefuel - 1;
+
     }
 
     //Drone FSM Behaviour - Scouting
@@ -219,7 +224,9 @@ public class Drone : Enemy {
                 newResourceVal = 0;
                 newResourceObject = null;
 
+
                 droneBehaviour = DroneBehaviours.Idle;
+
             }
 
 
