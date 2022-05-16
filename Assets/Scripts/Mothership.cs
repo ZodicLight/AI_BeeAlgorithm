@@ -15,7 +15,10 @@ public class Mothership : MonoBehaviour {
     public List<GameObject> eliteForagers = new List<GameObject>();//elite foragers 
     public List<GameObject> foragers = new List<GameObject>();
 
+    //20 drones in total
     public int maxScouts = 4;
+    public int maxElites = 4;
+    public int maxForagers = 6;
 
     public List<GameObject> resourceObjects = new List<GameObject>();
 
@@ -58,6 +61,19 @@ public class Mothership : MonoBehaviour {
             scouts[scouts.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Scouting;
         }
 
+        //(Re)Initialise elite Continuously
+        if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
+        {
+
+            eliteForagers.Add(drones[0]);
+            drones.Remove(drones[0]);
+
+            //array of objects 
+            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
+            Debug.Log("Calling EliteForaging in Mothership.cs");
+        }
+
+
         //*** (Re)Determine best resource objects periodically 
         if (resourceObjects.Count > 0 && Time.time > forageTimer)//every ten second?
         {
@@ -73,6 +89,8 @@ public class Mothership : MonoBehaviour {
             });
 
            forageTimer = Time.time + forageTime;
+
+           //send scout out 
         }
 
        

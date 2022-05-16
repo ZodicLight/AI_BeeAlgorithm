@@ -30,6 +30,7 @@ public class Drone : Enemy {
         Idle,
         Scouting,//W7
         Foraging,//WS7
+        EliteForaging,
         Attacking,//WS8
         Fleeing//WS8
     }
@@ -55,6 +56,8 @@ public class Drone : Enemy {
     private float distanceRatio = 0.05f;
 
     public int dronefuel;
+    public int resourceCap;
+    public int resourceCarry; 
 
 
     // Use this for initialization
@@ -95,22 +98,25 @@ public class Drone : Enemy {
             case DroneBehaviours.Scouting:
                 Scouting();
                 break;
+
+            case DroneBehaviours.EliteForaging:
+                EliteForaging();
+                break;
+
             case DroneBehaviours.Foraging:
-                Scouting();
+                Foraging();
                 break;
             case DroneBehaviours.Attacking:
              
                 Scouting();
                 break;
         }
-
-
     }
 
 
     private void BoidBehaviour()
     {
-        Debug.Log("BoidBehavior");
+        //Debug.Log("BoidBehavior");
         //Increment boid index reference
         boidIndex++;
 
@@ -175,8 +181,12 @@ public class Drone : Enemy {
     }
 
     //Drone FSM Behaviour - Scouting
+    //***need update with fuel/cap 
+    //***periodically perform a Global Search 
+
     private void Scouting()
     {
+        Debug.Log("Calling Scouting in Drone.cs");
         //If no new resource object found
         if (!newResourceObject)
         {
@@ -232,9 +242,6 @@ public class Drone : Enemy {
                 droneBehaviour = DroneBehaviours.Idle;
 
             }
-
-
-
 
         }
 
@@ -301,6 +308,42 @@ public class Drone : Enemy {
 
 
         }
+
+
+    }
+
+    private void Foraging()
+    {
+        //normal foraging 
+        //one patch two drones max?
+        //three patches, each patch two drones max? 6 drones
+        //mine resource 
+
+        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
+        //send scout 4 max
+
+        //===============================================
+        //resourceObjects.Count from mothership
+
+
+    }
+
+    private void EliteForaging()
+    {
+        Debug.Log("Calling EliteForaging in Drone.cs");
+        //elite foraging
+        //only the top two tier drone selected
+        //two patches, each patch two drones max? 4 drones 
+
+        //invesitigate the local area 
+        //if found better resource -> scout 
+        //mine resource 
+        //return to mothership await instruction??
+
+        //if no elite foragers find new resources -> neighbourhood shrinking 
+
+        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
+        //send scout 4 max
 
 
     }
