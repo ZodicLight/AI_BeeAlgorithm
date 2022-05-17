@@ -17,7 +17,7 @@ public class Mothership : MonoBehaviour {
 
     //20 drones in total
     public int maxScouts = 4;
-    public int maxElites = 4;
+    public int maxElites = 1;
     public int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -66,17 +66,27 @@ public class Mothership : MonoBehaviour {
             scouts[scouts.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Scouting;
         }
 
-        ////(Re)Initialise elite Continuously
-        //if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
-        //{
+        //(Re)Initialise elite Continuously
+        if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
+        {
 
-        //    eliteForagers.Add(drones[0]);
-        //    drones.Remove(drones[0]);
+            eliteForagers.Add(drones[0]);
+            drones.Remove(drones[0]);
 
-        //    //array of objects 
-        //    eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
-        //    //Debug.Log("Calling EliteForaging in Mothership.cs");
-        //}
+            //array of objects 
+            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
+            //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
+
+            Vector3 testAsteroidPos = new Vector3(70f, 75f, 124f);
+
+            //Vector3 test2 = resourceObjects[0].transform.position;
+            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = testAsteroidPos;
+
+            //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = resourceObjects[0].transform.position;
+            //Vector3 temp = resourceObjects[0].transform.position;
+
+            //Debug.Log("Calling EliteForaging in Mothership.cs");
+        }
 
 
         //*** (Re)Determine best resource objects periodically 
@@ -104,60 +114,60 @@ public class Mothership : MonoBehaviour {
         //=========================================================================
 
 
-        //Set the best drones (the ones with the most fuel) to be Elite forages
-        if (drones.Count > 1 && numOfEliteForages < 2)
-        {
+        ////Set the best drones (the ones with the most fuel) to be Elite forages
+        //if (drones.Count > 1 && numOfEliteForages < 2)
+        //{
 
-            // **** TO FIX: move these next four lines down to below...
-            eliteForagers.Add(drones[0]);
-            drones.Remove(drones[0]);
+        //    // **** TO FIX: move these next four lines down to below...
+        //    eliteForagers.Add(drones[0]);
+        //    drones.Remove(drones[0]);
 
-            numOfEliteForages++;
-            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
+        //    numOfEliteForages++;
+        //    eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
 
-            //designate this elite forager to the next best resource that has been found that is not yet being foraged
-            bool assignedForFrame = false;
-            foreach (GameObject astroid in resourceObjects)
-            {
-                if (!assignedForFrame)
-                {
-                    if (!astroid.GetComponent<Asteroid>().isBeingForaged)      // ****  <----- OR other wise comment out this if statement, ignoring if it is already being mined, and allow multiple drones to mine it.
-                    {
-                        eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = astroid;
-                        astroid.GetComponent<Asteroid>().isBeingForaged = true;
-                        assignedForFrame = true;
-                        // **** ... To HERE - I think and the same for the next section of code below
-                        // This would mean the Drone would get assinged when there is a new resource....
-                        // Or we need to change the code so we ignore if it isBeingForaged
-                    }
-                }
-            }
-        }
-        //and set the next 3 drones to normal Normal forages
-        else if (numOfEliteForages == 2 && drones.Count > 1 && numOfNormalForages < 3)
-        {
+        //    //designate this elite forager to the next best resource that has been found that is not yet being foraged
+        //    bool assignedForFrame = false;
+        //    foreach (GameObject astroid in resourceObjects)
+        //    {
+        //        if (!assignedForFrame)
+        //        {
+        //            if (!astroid.GetComponent<Asteroid>().isBeingForaged)      // ****  <----- OR other wise comment out this if statement, ignoring if it is already being mined, and allow multiple drones to mine it.
+        //            {
+        //                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = astroid;
+        //                astroid.GetComponent<Asteroid>().isBeingForaged = true;
+        //                assignedForFrame = true;
+        //                // **** ... To HERE - I think and the same for the next section of code below
+        //                // This would mean the Drone would get assinged when there is a new resource....
+        //                // Or we need to change the code so we ignore if it isBeingForaged
+        //            }
+        //        }
+        //    }
+        //}
+        ////and set the next 3 drones to normal Normal forages
+        //else if (numOfEliteForages == 2 && drones.Count > 1 && numOfNormalForages < 3)
+        //{
 
-            // **** REPEAT the same steps for this function
-            foragers.Add(drones[0]);
-            drones.Remove(drones[0]);
+        //    // **** REPEAT the same steps for this function
+        //    foragers.Add(drones[0]);
+        //    drones.Remove(drones[0]);
 
-            numOfNormalForages++;
-            foragers[foragers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
+        //    numOfNormalForages++;
+        //    foragers[foragers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
 
-            //designate normal forager to the 3 best patches, and normal foragers to the next 3 best asteroids
-            bool assignedForFrame = false;
-            foreach (GameObject astroid in resourceObjects)
-            {
-                if (!assignedForFrame)
-                {
-                    if (!astroid.GetComponent<Asteroid>().isBeingForaged)
-                    {
-                        foragers[foragers.Count - 1].GetComponent<Drone>().target = astroid;
-                        astroid.GetComponent<Asteroid>().isBeingForaged = true;
-                    }
-                }
-            }
-        }
+        //    //designate normal forager to the 3 best patches, and normal foragers to the next 3 best asteroids
+        //    bool assignedForFrame = false;
+        //    foreach (GameObject astroid in resourceObjects)
+        //    {
+        //        if (!assignedForFrame)
+        //        {
+        //            if (!astroid.GetComponent<Asteroid>().isBeingForaged)
+        //            {
+        //                foragers[foragers.Count - 1].GetComponent<Drone>().target = astroid;
+        //                astroid.GetComponent<Asteroid>().isBeingForaged = true;
+        //            }
+        //        }
+        //    }
+        //}
 
 
 
