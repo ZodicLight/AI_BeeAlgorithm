@@ -16,9 +16,9 @@ public class Mothership : MonoBehaviour {
     public List<GameObject> foragers = new List<GameObject>();
 
     //20 drones in total
-    public int maxScouts = 4;
-    public int maxElites = 1;
-    public int maxForagers = 6;//the rest is just foragers?
+    private int maxScouts = 4;
+    private int maxElites = 1;
+    private int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
 
