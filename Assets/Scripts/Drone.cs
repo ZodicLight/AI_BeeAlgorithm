@@ -330,7 +330,7 @@ public class Drone : Enemy {
 
     private void EliteForaging()
     {
-        Debug.Log("Calling EliteForaging in Drone.cs");
+        //Debug.Log("Calling EliteForaging in Drone.cs");
         //elite foraging
         //only the top two tier drone selected
         //two patches, each patch two drones max? 4 drones 
@@ -344,6 +344,10 @@ public class Drone : Enemy {
 
         //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
         //send scout 4 max
+
+
+
+
 
 
     }
