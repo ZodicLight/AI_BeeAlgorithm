@@ -187,7 +187,7 @@ public class Drone : Enemy {
 
     private void Scouting()
     {
-        Debug.Log("Calling Scouting in Drone.cs");
+        //Debug.Log("Calling Scouting in Drone.cs");
         //If no new resource object found
         if (!newResourceObject)
         {
@@ -332,16 +332,15 @@ public class Drone : Enemy {
     private void EliteForaging()
     {
         Vector3 MiningAsteroidPos;
-
-        //Vector3 MiningAsteroidPos = (MiningAsteroidPos);
+    
         //MiningAsteroidPos = new Vector3 (70f, 75f, 124f);
-        MiningAsteroidPos = new Vector3(355f, 432f, 1010f);
 
         MoveTowardsTarget(tempTarget);//asteroid
+        //move back to mothership 
+        
+        //Debug.DrawLine(transform.position, MiningAsteroidPos, Color.red);
 
-        Debug.DrawLine(transform.position, MiningAsteroidPos, Color.red);
-
-        //Debug.DrawLine(transform.position, tempTarget, Color.red);
+        Debug.DrawLine(transform.position, tempTarget, Color.red);
 
         //Debug.Log("Calling EliteForaging in Drone.cs");
         //elite foraging

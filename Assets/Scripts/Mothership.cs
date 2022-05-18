@@ -17,7 +17,7 @@ public class Mothership : MonoBehaviour {
 
     //20 drones in total
     private int maxScouts = 4;
-    private int maxElites = 1;
+    private int maxElites = 2;
     private int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -32,6 +32,7 @@ public class Mothership : MonoBehaviour {
     private int totalMineCollected;
     private int targetMineGoal = 1000;
 
+    private int resourceCount = 0;
 
 
     // initialise the boids
@@ -66,27 +67,35 @@ public class Mothership : MonoBehaviour {
             scouts[scouts.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Scouting;
         }
 
-        //(Re)Initialise elite Continuously
-        if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
+        //===============================================================================
+        //focus on here 
+        if(resourceObjects.Count >= 2)
         {
+            //(Re)Initialise elite Continuously
+            if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
+            {
+                
+                eliteForagers.Add(drones[0]);
+                drones.Remove(drones[0]);
 
-            eliteForagers.Add(drones[0]);
-            drones.Remove(drones[0]);
+                //array of objects 
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
+                //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
-            //array of objects 
-            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
-            //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
-            Vector3 testAsteroidPos = new Vector3(70f, 75f, 124f);
+                Vector3 test2 = resourceObjects[resourceCount].transform.position;//because there is no asteroid inside the list 
 
-            //Vector3 test2 = resourceObjects[0].transform.position;
-            eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = testAsteroidPos;
+                Debug.Log("Vector location" + test2);//Work!!
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = test2;
+                resourceCount = resourceCount + 1;
 
-            //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = resourceObjects[0].transform.position;
-            //Vector3 temp = resourceObjects[0].transform.position;
+                //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = resourceObjects[0].transform.position;
+                //Vector3 temp = resourceObjects[0].transform.position;
 
-            //Debug.Log("Calling EliteForaging in Mothership.cs");
+                //Debug.Log("Calling EliteForaging in Mothership.cs");
+            }
         }
+        
 
 
         //*** (Re)Determine best resource objects periodically 
