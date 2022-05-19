@@ -56,7 +56,6 @@ public class Drone : Enemy {
     private float distanceRatio = 0.05f;
 
     public int dronefuel;
-    public int resourceCap;
     public int resourceCarry;
 
     public Vector3 tempTarget;
@@ -179,6 +178,34 @@ public class Drone : Enemy {
         else
         {
             target = motherShip;
+            Debug.DrawLine(transform.position, target.transform.position, Color.green);
+            //get asteriod resource?
+            //resourceObject[]
+        }
+
+        dronefuel = dronefuel - 1;
+
+    }
+
+
+    private void MiningResource(Vector3 miningPos)
+    {//this i sthe code to find target 
+
+        //Rotate and move towards target if out of range
+        if (Vector3.Distance(miningPos, transform.position) > targetRadius)
+        {
+            //Lerp Towards target
+            targetRotation = Quaternion.LookRotation(miningPos - transform.position);
+            adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
+
+            rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
+        }
+        else
+        {
+            //return to mothership 
+            target = motherShip;
+            //MoveTowardsTarget(target.transform.position);
             Debug.DrawLine(transform.position, target.transform.position, Color.green);
             //get asteriod resource?
             //resourceObject[]
@@ -339,8 +366,9 @@ public class Drone : Enemy {
     private void EliteForaging()
     {
         Vector3 MiningAsteroidPos;
-    
-        MoveTowardsTarget(tempTarget);//asteroid
+
+        MiningResource(tempTarget);
+        //MoveTowardsTarget(tempTarget);//asteroid
 
         Debug.DrawLine(transform.position, tempTarget, Color.blue);
 
