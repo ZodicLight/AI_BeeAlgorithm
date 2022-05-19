@@ -176,6 +176,13 @@ public class Drone : Enemy {
 
             rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
         }
+        else
+        {
+            target = motherShip;
+            Debug.DrawLine(transform.position, target.transform.position, Color.green);
+            //get asteriod resource?
+            //resourceObject[]
+        }
 
         dronefuel = dronefuel - 1;
 
@@ -333,14 +340,9 @@ public class Drone : Enemy {
     {
         Vector3 MiningAsteroidPos;
     
-        //MiningAsteroidPos = new Vector3 (70f, 75f, 124f);
-
         MoveTowardsTarget(tempTarget);//asteroid
-        //move back to mothership 
-        
-        //Debug.DrawLine(transform.position, MiningAsteroidPos, Color.red);
 
-        Debug.DrawLine(transform.position, tempTarget, Color.red);
+        Debug.DrawLine(transform.position, tempTarget, Color.blue);
 
         //Debug.Log("Calling EliteForaging in Drone.cs");
         //elite foraging

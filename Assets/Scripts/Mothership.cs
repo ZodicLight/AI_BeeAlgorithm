@@ -17,7 +17,7 @@ public class Mothership : MonoBehaviour {
 
     //20 drones in total
     private int maxScouts = 4;
-    private int maxElites = 4;
+    private int maxElites = 1;
     private int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -68,7 +68,8 @@ public class Mothership : MonoBehaviour {
         }
 
         //===============================================================================
-        //focus on here 
+        //*** focus on here 
+        //Start droning 
         if(resourceObjects.Count >= 5)
         {
             //(Re)Initialise elite Continuously
