@@ -17,7 +17,7 @@ public class Mothership : MonoBehaviour {
 
     //20 drones in total
     private int maxScouts = 4;
-    private int maxElites = 2;
+    private int maxElites = 4;
     private int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -69,7 +69,7 @@ public class Mothership : MonoBehaviour {
 
         //===============================================================================
         //focus on here 
-        if(resourceObjects.Count >= 2)
+        if(resourceObjects.Count >= 5)
         {
             //(Re)Initialise elite Continuously
             if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
