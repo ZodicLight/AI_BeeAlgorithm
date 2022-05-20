@@ -70,7 +70,7 @@ public class Mothership : MonoBehaviour {
         //===============================================================================
         //*** focus on here 
         //Start droning 
-        if(resourceObjects.Count >= 5)
+        if(resourceObjects.Count >= 3)//***may case bug here 
         {
             //(Re)Initialise elite Continuously
             if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
@@ -84,14 +84,12 @@ public class Mothership : MonoBehaviour {
                 //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
 
-                Vector3 test2 = resourceObjects[resourceCount].transform.position;//because there is no asteroid inside the list 
+                Vector3 asteriodPos = resourceObjects[resourceCount].transform.position;//because there is no asteroid inside the list 
 
-                Debug.Log("Vector location" + test2);//Work!!
-                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = test2;
+
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
                 resourceCount = resourceCount + 1;
-
-                //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = resourceObjects[0].transform.position;
-                //Vector3 temp = resourceObjects[0].transform.position;
 
                 //Debug.Log("Calling EliteForaging in Mothership.cs");
             }

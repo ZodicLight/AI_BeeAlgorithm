@@ -58,7 +58,8 @@ public class Drone : Enemy {
     public int dronefuel;
     public int resourceCarry;
 
-    public Vector3 tempTarget;
+    public Vector3 MiningTarget;
+    public bool isDroneFullFromMining = false;
 
     // Use this for initialization
     void Start() {
@@ -177,8 +178,9 @@ public class Drone : Enemy {
         }
         else
         {
-            target = motherShip;
-            Debug.DrawLine(transform.position, target.transform.position, Color.green);
+            //target = motherShip;
+            //Debug.DrawLine(transform.position, target.transform.position, Color.green);
+
             //get asteriod resource?
             //resourceObject[]
         }
@@ -187,33 +189,6 @@ public class Drone : Enemy {
 
     }
 
-
-    private void MiningResource(Vector3 miningPos)
-    {//this i sthe code to find target 
-
-        //Rotate and move towards target if out of range
-        if (Vector3.Distance(miningPos, transform.position) > targetRadius)
-        {
-            //Lerp Towards target
-            targetRotation = Quaternion.LookRotation(miningPos - transform.position);
-            adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
-
-            rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
-        }
-        else
-        {
-            //return to mothership 
-            target = motherShip;
-            //MoveTowardsTarget(target.transform.position);
-            Debug.DrawLine(transform.position, target.transform.position, Color.green);
-            //get asteriod resource?
-            //resourceObject[]
-        }
-
-        dronefuel = dronefuel - 1;
-
-    }
 
     //Drone FSM Behaviour - Scouting
     //***need update with fuel/cap 
@@ -367,10 +342,24 @@ public class Drone : Enemy {
     {
         Vector3 MiningAsteroidPos;
 
-        MiningResource(tempTarget);
-        //MoveTowardsTarget(tempTarget);//asteroid
+        if (isDroneFullFromMining == false)
+        {
+            MiningResource(MiningTarget);
+            Debug.DrawLine(transform.position, MiningTarget, Color.blue);
+        }
+        else
+        {
+            //return to mothership 
+            MoveTowardsTarget(motherShip.transform.position);//MotherShip
+            Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
+            //In range of mothership, relay information and reset to drone again
+            if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
+            {
+                isDroneFullFromMining = false;
+            }
+        }
 
-        Debug.DrawLine(transform.position, tempTarget, Color.blue);
+
 
         //Debug.Log("Calling EliteForaging in Drone.cs");
         //elite foraging
@@ -387,13 +376,36 @@ public class Drone : Enemy {
         //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
         //send scout 4 max
 
-
-
-
-
-
     }
 
+    private void MiningResource(Vector3 miningPos)
+    {//this i sthe code to find target 
+
+        //Rotate and move towards target if out of range
+        if ((Vector3.Distance(miningPos, transform.position) > targetRadius) && !isDroneFullFromMining)
+        {
+            //Lerp Towards target
+            targetRotation = Quaternion.LookRotation(miningPos - transform.position);
+            adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
+
+            rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
+        }
+        else
+        {
+            //this part was never called
+            isDroneFullFromMining = true;
+            
+            
+            //MoveTowardsTarget(target.transform.position);
+            //Debug.DrawLine(transform.position, target.transform.position, Color.red);
+            //get asteriod resource?
+            //resourceObject[]
+        }
+
+        dronefuel = dronefuel - 1;
+
+    }
 
 
 
