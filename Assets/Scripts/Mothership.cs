@@ -17,7 +17,7 @@ public class Mothership : MonoBehaviour {
 
     //20 drones in total
     private int maxScouts = 4;
-    private int maxElites = 1;
+    private int maxElites = 3;
     private int maxForagers = 6;//the rest is just foragers?
 
     public List<GameObject> resourceObjects = new List<GameObject>();
@@ -68,9 +68,33 @@ public class Mothership : MonoBehaviour {
         }
 
         //===============================================================================
+
+        //PART 2
+ //   * If the Resource Location list is populated, 
+	//If Resource[].count > 0
+
+ //       * the Mothership should designate elite foragers to the 2 best[patches]
+
+ //       While eliteForages[].count < 2
+
+ //       if ther is less than 2 drones....so in otherwords if there is only 1
+
+ //           Assign an Elite forager(providing there is a Resource to assign it to....and that we have a drone to assign)
+
+	//	*and normal foragers to the next 3 best[asteroids].
+
+ //       If Resource[].count > 2
+
+ //           While foragers[].count < 3
+
+ //               Assign Forager
+
+
+
+
         //*** focus on here 
         //Start droning 
-        if(resourceObjects.Count >= 3)//***may case bug here 
+        if (resourceObjects.Count >= 3)//***may case bug here 
         {
             //(Re)Initialise elite Continuously
             if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
@@ -84,7 +108,11 @@ public class Mothership : MonoBehaviour {
                 //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
 
-                Vector3 asteriodPos = resourceObjects[resourceCount].transform.position;//because there is no asteroid inside the list 
+                //resourceCount starts at zero thus this gets the position of the highest resourced Asteroid
+                //!!!!!!
+                //     We may have a BUG HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //!!!!!!
+                Vector3 asteriodPos = resourceObjects[resourceCount].transform.position;
 
 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;

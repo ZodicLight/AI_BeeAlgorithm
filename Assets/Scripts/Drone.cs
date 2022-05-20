@@ -55,7 +55,7 @@ public class Drone : Enemy {
     private Vector3 attackPos;
     private float distanceRatio = 0.05f;
 
-    public int dronefuel;
+    public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
     public int resourceCarry;
 
     public Vector3 MiningTarget;
@@ -71,6 +71,7 @@ public class Drone : Enemy {
         motherShip = gameManager.alienMothership;
         scoutPosition = motherShip.transform.position;
 
+        //Part 1 - give each drone a random amount of fuel.
         dronefuel = Random.Range(8000, 10000);
 
 
@@ -340,8 +341,6 @@ public class Drone : Enemy {
 
     private void EliteForaging()
     {
-        Vector3 MiningAsteroidPos;
-
         if (isDroneFullFromMining == false)
         {
             MiningResource(MiningTarget);
