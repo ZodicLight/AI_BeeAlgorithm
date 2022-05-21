@@ -55,11 +55,17 @@ public class Drone : Enemy {
     private Vector3 attackPos;
     private float distanceRatio = 0.05f;
 
+    //mining Variables 
     public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
-    public int resourceCarry;
+    public int mineCapacity = 20; 
+    public int mineLoaded; 
 
     public Vector3 MiningTarget;
     public bool isDroneFullFromMining = false;
+
+    public GameObject miningAsteroid;//Asteroid object from Mothership Class
+
+
 
     // Use this for initialization
     void Start() {
@@ -96,6 +102,7 @@ public class Drone : Enemy {
 
         switch (droneBehaviour)
         {
+            // <-- where is Idle? Do we need to code that?
 
             case DroneBehaviours.Scouting:
                 Scouting();
@@ -137,7 +144,9 @@ public class Drone : Enemy {
             cohesionPos.Set(0f, 0f, 0f);
           
         }
+
         Debug.DrawLine(transform.position, gameManager.enemyList[boidIndex].transform.position);
+
             //Currently analysed boid variables
             Vector3 pos = gameManager.enemyList[boidIndex].transform.position;
             Quaternion rot = gameManager.enemyList[boidIndex].transform.rotation;
@@ -179,14 +188,10 @@ public class Drone : Enemy {
         }
         else
         {
-            //target = motherShip;
-            //Debug.DrawLine(transform.position, target.transform.position, Color.green);
 
-            //get asteriod resource?
-            //resourceObject[]
         }
 
-        dronefuel = dronefuel - 1;
+        dronefuel = dronefuel - 1;//<-- change base on distance not frame 
 
     }
 
@@ -240,6 +245,7 @@ public class Drone : Enemy {
             //In range of mothership, relay information and reset to drone again
             if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
             {
+                //dronefuel = dronefuel + 5000; Can't base on frame must be distance 
 
                 motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
                 motherShip.GetComponent<Mothership>().scouts.Remove(this.gameObject);
@@ -250,7 +256,8 @@ public class Drone : Enemy {
                 newResourceObject = null;
 
 
-                droneBehaviour = DroneBehaviours.Idle;
+                droneBehaviour = DroneBehaviours.Idle;//<-----
+                
 
             }
 
@@ -341,6 +348,16 @@ public class Drone : Enemy {
 
     private void EliteForaging()
     {
+        //Debug.Log("Calling EliteForaging in Drone.cs");
+        //invesitigate the local area 
+        //if found better resource -> scout 
+        //mine resource 
+
+        //if no elite foragers find new resources -> neighbourhood shrinking 
+
+        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
+        //send scout 4 max
+
         if (isDroneFullFromMining == false)
         {
             MiningResource(MiningTarget);
@@ -350,31 +367,23 @@ public class Drone : Enemy {
         {
             //return to mothership 
             MoveTowardsTarget(motherShip.transform.position);//MotherShip
+
             Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
+
+            //on return trip 
+            //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
+            //miningAsteroid.GetComponent<Asteroid>().minusResource(10);//take 10 resource from Asteroid
+
             //In range of mothership, relay information and reset to drone again
             if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
             {
+                Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
+                miningAsteroid.GetComponent<Asteroid>().minusResource(10);//<-- the asteroid has delay death..
+
+                dronefuel = dronefuel + 5000;
                 isDroneFullFromMining = false;
             }
-        }
-
-
-
-        //Debug.Log("Calling EliteForaging in Drone.cs");
-        //elite foraging
-        //only the top two tier drone selected
-        //two patches, each patch two drones max? 4 drones 
-
-        //invesitigate the local area 
-        //if found better resource -> scout 
-        //mine resource 
-        //return to mothership await instruction??
-
-        //if no elite foragers find new resources -> neighbourhood shrinking 
-
-        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
-        //send scout 4 max
-
+        }      
     }
 
     private void MiningResource(Vector3 miningPos)
@@ -394,15 +403,10 @@ public class Drone : Enemy {
         {
             //this part was never called
             isDroneFullFromMining = true;
-            
-            
-            //MoveTowardsTarget(target.transform.position);
-            //Debug.DrawLine(transform.position, target.transform.position, Color.red);
-            //get asteriod resource?
-            //resourceObject[]
+           
         }
 
-        dronefuel = dronefuel - 1;
+        dronefuel = dronefuel - 1;//should be adjust to distance instead?
 
     }
 

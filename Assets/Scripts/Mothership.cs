@@ -15,12 +15,15 @@ public class Mothership : MonoBehaviour {
     public List<GameObject> eliteForagers = new List<GameObject>();//elite foragers 
     public List<GameObject> foragers = new List<GameObject>();
 
+    public List<GameObject> resourceObjects = new List<GameObject>();
+
+    //public GameObject asteroidObject; 
+
     //20 drones in total
     private int maxScouts = 4;
-    private int maxElites = 3;
+    private int maxElites = 2;
     private int maxForagers = 6;//the rest is just foragers?
-
-    public List<GameObject> resourceObjects = new List<GameObject>();
+   
 
     private float forageTimer;
     private float forageTime = 10.0f;
@@ -32,7 +35,7 @@ public class Mothership : MonoBehaviour {
     private int totalMineCollected;
     private int targetMineGoal = 1000;
 
-    private int resourceCount = 0;
+    private int topAsteroidCount = 0;
 
 
     // initialise the boids
@@ -69,33 +72,10 @@ public class Mothership : MonoBehaviour {
 
         //===============================================================================
 
-        //PART 2
- //   * If the Resource Location list is populated, 
-	//If Resource[].count > 0
-
- //       * the Mothership should designate elite foragers to the 2 best[patches]
-
- //       While eliteForages[].count < 2
-
- //       if ther is less than 2 drones....so in otherwords if there is only 1
-
- //           Assign an Elite forager(providing there is a Resource to assign it to....and that we have a drone to assign)
-
-	//	*and normal foragers to the next 3 best[asteroids].
-
- //       If Resource[].count > 2
-
- //           While foragers[].count < 3
-
- //               Assign Forager
-
-
-
-
-        //*** focus on here 
-        //Start droning 
-        if (resourceObjects.Count >= 3)//***may case bug here 
+        //wait till number of Asteroids discover 
+        if (resourceObjects.Count >= 3)
         {
+            //Start elite droning 
             //(Re)Initialise elite Continuously
             if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
             {
@@ -108,18 +88,21 @@ public class Mothership : MonoBehaviour {
                 //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
 
-                //resourceCount starts at zero thus this gets the position of the highest resourced Asteroid
-                //!!!!!!
-                //     We may have a BUG HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //!!!!!!
-                Vector3 asteriodPos = resourceObjects[resourceCount].transform.position;
+                //topAsteroidCount starts at zero thus this gets the position of the highest resourced Asteroid
+                Vector3 asteriodPos = resourceObjects[topAsteroidCount].transform.position;
 
+                GameObject asteroidObject = resourceObjects[topAsteroidCount]; 
 
+                
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;
-                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
-                resourceCount = resourceCount + 1;
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().miningAsteroid = asteroidObject;
 
-                //Debug.Log("Calling EliteForaging in Mothership.cs");
+                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
+                
+                if(topAsteroidCount <= 2)//tested Passed 
+                {
+                    topAsteroidCount = topAsteroidCount + 1;
+                }
             }
         }
         
@@ -134,7 +117,7 @@ public class Mothership : MonoBehaviour {
                 return (b.GetComponent<Asteroid>().resource).CompareTo(a.GetComponent<Asteroid>().resource);
             });
 
-            drones.Sort(delegate (GameObject a, GameObject b)//?is this good the good area to check this?
+            drones.Sort(delegate (GameObject a, GameObject b)//***is this good the good area to check this?
             {
                 return (b.GetComponent<Drone>().dronefuel).CompareTo(a.GetComponent<Drone>().dronefuel);
             });

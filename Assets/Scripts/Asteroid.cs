@@ -5,9 +5,9 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour
 {
 
-    public int resource = 50;
+    public double resource = 50;
     public bool isBeingForaged = false;
-    public int mined=0;
+    public int droneLoad=0;
 
     public GameObject deathEffect;
     public GameObject deathSound;
@@ -16,16 +16,23 @@ public class Asteroid : MonoBehaviour
     void Start()
     {
         resource = Random.Range(10, 100);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(mined > resource)
+
+        if(resource <= 0)
         {
             Destroy(this.gameObject);
-            Instantiate(deathEffect, transform.position, transform.rotation);
-            Instantiate(deathSound, transform.position, transform.rotation);
+            //Instantiate(deathEffect, transform.position, transform.rotation);
+            //Instantiate(deathSound, transform.position, transform.rotation);
         }
+    }
+
+    public void minusResource(int miningLoad)
+    {
+        resource -= miningLoad;
     }
 }
