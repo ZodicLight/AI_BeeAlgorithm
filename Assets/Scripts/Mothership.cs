@@ -98,22 +98,8 @@ public class Mothership : MonoBehaviour {
 
                 GameObject asteroidObject = resourceObjects[topAsteroidCount];
 
-                //if(asteroidDeath == null)
-                //{
-                //    Debug.Log("death");
-                //}
-
-                if (asteroidObject == null)
-                {
-                    Debug.Log("Asteroid death");
-                }
-
-
-
-
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().miningAsteroid = asteroidObject;
-
 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
                 
