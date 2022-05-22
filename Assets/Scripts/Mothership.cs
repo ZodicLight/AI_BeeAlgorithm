@@ -200,20 +200,29 @@ public class Mothership : MonoBehaviour {
     //Remove all asteroids from the list of found resourceObjects once they no longer have any resources left... as they will be destroyed.
     private void removeDestroyedAsteroids()
     {
-        List<GameObject> tempListToRemove = new List<GameObject>();
+        //List<GameObject> tempListToRemove = new List<GameObject>();
 
-        foreach (GameObject asteroid in resourceObjects)
+        //foreach (GameObject asteroid in resourceObjects)
+        //{
+        //    if (asteroid.GetComponent<Asteroid>().resource <= 0)
+        //    {
+        //        tempListToRemove.Add(asteroid);
+        //        //Destroy(asteroid);
+        //    }
+        //}
+
+        //foreach (GameObject asteroid in tempListToRemove)
+        //{
+        //    resourceObjects.Remove(asteroid);
+        //}
+
+        for (int i = 0; i < resourceObjects.Count; i++) 
         {
-            if (asteroid.GetComponent<Asteroid>().resource <= 0)
+            if (resourceObjects[i].GetComponent<Asteroid>().resource <= 0)
             {
-                tempListToRemove.Add(asteroid);
+                resourceObjects.Remove(resourceObjects[i]);
                 //Destroy(asteroid);
             }
-        }
-
-        foreach (GameObject asteroid in tempListToRemove)
-        {
-            resourceObjects.Remove(asteroid);
         }
     }
 
