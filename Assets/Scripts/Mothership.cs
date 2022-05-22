@@ -216,7 +216,7 @@ public class Mothership : MonoBehaviour {
         //    resourceObjects.Remove(asteroid);
         //}
 
-        for (int i = 0; i < resourceObjects.Count-1; i++) 
+        for (int i = 0; i < resourceObjects.Count; i++) //I have to test it -1, important
         {
             if (resourceObjects[i].GetComponent<Asteroid>().resource <= 0)
             {
