@@ -37,6 +37,8 @@ public class Mothership : MonoBehaviour {
 
     private int topAsteroidCount = 0;
 
+    //public gameObject asteroidDeath; 
+
 
     // initialise the boids
     void Start() {
@@ -58,9 +60,12 @@ public class Mothership : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
         //(Re)Initialise Scouts Continuously
         //!add our fittest drone How do you add fitness? Sor the drone base on fuel
+
+        removeDestroyedAsteroids();
+
+
         if (scouts.Count < maxScouts)
         {
 
@@ -91,11 +96,24 @@ public class Mothership : MonoBehaviour {
                 //topAsteroidCount starts at zero thus this gets the position of the highest resourced Asteroid
                 Vector3 asteriodPos = resourceObjects[topAsteroidCount].transform.position;
 
-                GameObject asteroidObject = resourceObjects[topAsteroidCount]; 
+                GameObject asteroidObject = resourceObjects[topAsteroidCount];
 
-                
+                //if(asteroidDeath == null)
+                //{
+                //    Debug.Log("death");
+                //}
+
+                if (asteroidObject == null)
+                {
+                    Debug.Log("Asteroid death");
+                }
+
+
+
+
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().miningAsteroid = asteroidObject;
+
 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
                 
@@ -191,5 +209,27 @@ public class Mothership : MonoBehaviour {
 
 
     }
+
+
+    //Remove all asteroids from the list of found resourceObjects once they no longer have any resources left... as they will be destroyed.
+    private void removeDestroyedAsteroids()
+    {
+        List<GameObject> tempListToRemove = new List<GameObject>();
+
+        foreach (GameObject asteroid in resourceObjects)
+        {
+            if (asteroid.GetComponent<Asteroid>().resource <= 0)
+            {
+                tempListToRemove.Add(asteroid);
+                //Destroy(asteroid);
+            }
+        }
+
+        foreach (GameObject asteroid in tempListToRemove)
+        {
+            resourceObjects.Remove(asteroid);
+        }
+    }
+
 }
 

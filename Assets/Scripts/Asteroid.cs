@@ -8,6 +8,7 @@ public class Asteroid : MonoBehaviour
     public double resource = 50;
     public bool isBeingForaged = false;
     public int droneLoad=0;
+    public bool isDepleted;
 
     public GameObject deathEffect;
     public GameObject deathSound;
@@ -16,16 +17,19 @@ public class Asteroid : MonoBehaviour
     void Start()
     {
         resource = Random.Range(10, 100);
-        
+        isDepleted = false;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if(resource <= 0)
+        if (resource <= 0)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            isDepleted = true;
+
             //Instantiate(deathEffect, transform.position, transform.rotation);
             //Instantiate(deathSound, transform.position, transform.rotation);
         }

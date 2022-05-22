@@ -358,32 +358,51 @@ public class Drone : Enemy {
         //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
         //send scout 4 max
 
-        if (isDroneFullFromMining == false)
+        if (miningAsteroid == null)
         {
-            MiningResource(MiningTarget);
-            Debug.DrawLine(transform.position, MiningTarget, Color.blue);
+            Debug.Log("asteroid Destroy in drone class 1 ");
+
+            
+            //remove the miningAsteroid from Mothership resourceObject list 
+            //resourceObjects.remove(miningAsteroid);
+            //AsteroidDeath
+
         }
         else
         {
-            //return to mothership 
-            MoveTowardsTarget(motherShip.transform.position);//MotherShip
-
-            Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
-
-            //on return trip 
-            //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
-            //miningAsteroid.GetComponent<Asteroid>().minusResource(10);//take 10 resource from Asteroid
-
-            //In range of mothership, relay information and reset to drone again
-            if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
+            if (isDroneFullFromMining == false)
             {
-                Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
-                miningAsteroid.GetComponent<Asteroid>().minusResource(10);//<-- the asteroid has delay death..
-
-                dronefuel = dronefuel + 5000;
-                isDroneFullFromMining = false;
+                MiningResource(MiningTarget);
+                Debug.DrawLine(transform.position, MiningTarget, Color.blue);//on the way to Asteroid
             }
-        }      
+            else
+            {
+                //return to mothership 
+                MoveTowardsTarget(motherShip.transform.position);//on the way to MotherShip
+                Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
+
+
+                //how can I call a function just once here 
+
+                //on return trip 
+                //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
+                //miningAsteroid.GetComponent<Asteroid>().minusResource(10);//take 10 resource from Asteroid
+                
+                //In range of mothership, relay information and reset to drone again
+                if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
+                {
+                    Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
+                    miningAsteroid.GetComponent<Asteroid>().minusResource(30);//<-- the asteroid has delay death..
+
+                    dronefuel = dronefuel + 5000;
+                    isDroneFullFromMining = false;
+                }
+            }
+        }
+
+
+
+        
     }
 
     private void MiningResource(Vector3 miningPos)
