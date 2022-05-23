@@ -92,11 +92,13 @@ public class Drone : Enemy {
             target = gameManager.playerDreadnaught;
             droneBehaviour = DroneBehaviours.Attacking;
         }
-          
 
-        //Move towards valid targets
-        if(target)
-            MoveTowardsTarget(target.transform.position);
+
+        ////Move towards valid targets
+        if (target)//comment this line for attack and prey to work 
+            MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
+
+
 
         BoidBehaviour();
 
@@ -117,7 +119,7 @@ public class Drone : Enemy {
                 break;
             case DroneBehaviours.Attacking:
              
-                Scouting();
+                Attacking();
                 break;
         }
     }
@@ -191,9 +193,6 @@ public class Drone : Enemy {
         {
 
         }
-
-         
-
     }
 
 
