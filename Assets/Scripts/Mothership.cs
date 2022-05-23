@@ -23,7 +23,7 @@ public class Mothership : MonoBehaviour {
     private int maxScouts = 4;
     private int maxElites = 2;
     private int maxForagers = 6;//the rest is just foragers?
-   
+
 
     private float forageTimer;
     private float forageTime = 10.0f;
@@ -35,7 +35,7 @@ public class Mothership : MonoBehaviour {
     private int totalMineCollected;
     private int targetMineGoal = 1000;
 
-    private int topAsteroidCount = 0;
+    public int topAsteroidCount;
 
     //public gameObject asteroidDeath; 
 
@@ -63,12 +63,14 @@ public class Mothership : MonoBehaviour {
         //(Re)Initialise Scouts Continuously
         //!add our fittest drone How do you add fitness? Sor the drone base on fuel
 
-        removeDestroyedAsteroids();
+
 
 
         if (scouts.Count < maxScouts)
         {
-
+            //add timer here 
+            //once asteroid list reach 10 then stop and restart every 120 sec
+            //only assign the drone with most fuel 
             scouts.Add(drones[0]);
             drones.Remove(drones[0]);
 
@@ -76,21 +78,21 @@ public class Mothership : MonoBehaviour {
         }
 
         //===============================================================================
-
+        //Elite Forager 
         //wait till number of Asteroids discover 
-        if (resourceObjects.Count >= 3)
+        if (resourceObjects.Count >= 3)//the last three asteroid can be farm!!!
         {
             //Start elite droning 
             //(Re)Initialise elite Continuously
             if (eliteForagers.Count < maxElites)//!add our fittest drone How do you add fitness? Sor the drone base on fuel
             {
-                
+                Debug.Log("MotherShip Elite Forager method here");
+
                 eliteForagers.Add(drones[0]);
                 drones.Remove(drones[0]);
 
                 //array of objects 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.EliteForaging;
-                //eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().tempTarget = resourceObjects[0].transform.position;
 
 
                 //topAsteroidCount starts at zero thus this gets the position of the highest resourced Asteroid
@@ -98,19 +100,25 @@ public class Mothership : MonoBehaviour {
 
                 GameObject asteroidObject = resourceObjects[topAsteroidCount];
 
+                //this two 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().MiningTarget = asteriodPos;
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().miningAsteroid = asteroidObject;
 
                 eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().isDroneFullFromMining = false;
-                
-                if(topAsteroidCount <= 2)//tested Passed 
+
+                if (topAsteroidCount < 2)// 0, 1, 2?? it should be three drone?
                 {
+                    Debug.Log("topAsteroidCount: " + topAsteroidCount);
                     topAsteroidCount = topAsteroidCount + 1;
                 }
             }
         }
-        
 
+        if (resourceObjects.Count > 0)
+        {
+            //Debug.Log("resourceObjects.Count: " + resourceObjects.Count); //5min test seems ok
+            removeDestroyedAsteroids();
+        }
 
         //*** (Re)Determine best resource objects periodically 
         if (resourceObjects.Count > 0 && Time.time > forageTimer)//every ten second?
@@ -126,95 +134,17 @@ public class Mothership : MonoBehaviour {
                 return (b.GetComponent<Drone>().dronefuel).CompareTo(a.GetComponent<Drone>().dronefuel);
             });
 
-           forageTimer = Time.time + forageTime;
+            forageTimer = Time.time + forageTime;
 
-           //send scout out 
+            //send scout out 
         }
 
-
-
-        //=========================================================================
-        //=========================================================================
-
-
-        ////Set the best drones (the ones with the most fuel) to be Elite forages
-        //if (drones.Count > 1 && numOfEliteForages < 2)
-        //{
-
-        //    // **** TO FIX: move these next four lines down to below...
-        //    eliteForagers.Add(drones[0]);
-        //    drones.Remove(drones[0]);
-
-        //    numOfEliteForages++;
-        //    eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
-
-        //    //designate this elite forager to the next best resource that has been found that is not yet being foraged
-        //    bool assignedForFrame = false;
-        //    foreach (GameObject astroid in resourceObjects)
-        //    {
-        //        if (!assignedForFrame)
-        //        {
-        //            if (!astroid.GetComponent<Asteroid>().isBeingForaged)      // ****  <----- OR other wise comment out this if statement, ignoring if it is already being mined, and allow multiple drones to mine it.
-        //            {
-        //                eliteForagers[eliteForagers.Count - 1].GetComponent<Drone>().target = astroid;
-        //                astroid.GetComponent<Asteroid>().isBeingForaged = true;
-        //                assignedForFrame = true;
-        //                // **** ... To HERE - I think and the same for the next section of code below
-        //                // This would mean the Drone would get assinged when there is a new resource....
-        //                // Or we need to change the code so we ignore if it isBeingForaged
-        //            }
-        //        }
-        //    }
-        //}
-        ////and set the next 3 drones to normal Normal forages
-        //else if (numOfEliteForages == 2 && drones.Count > 1 && numOfNormalForages < 3)
-        //{
-
-        //    // **** REPEAT the same steps for this function
-        //    foragers.Add(drones[0]);
-        //    drones.Remove(drones[0]);
-
-        //    numOfNormalForages++;
-        //    foragers[foragers.Count - 1].GetComponent<Drone>().droneBehaviour = Drone.DroneBehaviours.Foraging;
-
-        //    //designate normal forager to the 3 best patches, and normal foragers to the next 3 best asteroids
-        //    bool assignedForFrame = false;
-        //    foreach (GameObject astroid in resourceObjects)
-        //    {
-        //        if (!assignedForFrame)
-        //        {
-        //            if (!astroid.GetComponent<Asteroid>().isBeingForaged)
-        //            {
-        //                foragers[foragers.Count - 1].GetComponent<Drone>().target = astroid;
-        //                astroid.GetComponent<Asteroid>().isBeingForaged = true;
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
     }
-
 
     //Remove all asteroids from the list of found resourceObjects once they no longer have any resources left... as they will be destroyed.
     private void removeDestroyedAsteroids()
     {
-        //List<GameObject> tempListToRemove = new List<GameObject>();
-
-        //foreach (GameObject asteroid in resourceObjects)
-        //{
-        //    if (asteroid.GetComponent<Asteroid>().resource <= 0)
-        //    {
-        //        tempListToRemove.Add(asteroid);
-        //        //Destroy(asteroid);
-        //    }
-        //}
-
-        //foreach (GameObject asteroid in tempListToRemove)
-        //{
-        //    resourceObjects.Remove(asteroid);
-        //}
+        //ArgumentOutOfRangeException. Negative or less then the size of the collection
 
         for (int i = 0; i < resourceObjects.Count; i++) //I have to test it -1, important
         {
@@ -224,6 +154,15 @@ public class Mothership : MonoBehaviour {
                 //Destroy(asteroid);
             }
         }
+
+    }
+
+    public void minustopAsteroidCount()
+    {
+
+            Debug.Log("topAsteroidCount: " + topAsteroidCount);//-343432
+            topAsteroidCount = topAsteroidCount - 1;
+
     }
 
 }

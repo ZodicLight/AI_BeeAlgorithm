@@ -39,4 +39,5 @@ public class Asteroid : MonoBehaviour
     {
         resource -= miningLoad;
     }
+
 }

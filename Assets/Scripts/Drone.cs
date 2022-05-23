@@ -12,7 +12,7 @@ public class Drone : Enemy {
     private float rotationSpeed = 5.0f;
     private float adjRotSpeed;
     private Quaternion targetRotation;
-    public GameObject target;
+    public GameObject target;//we suppose to use it??
     public float targetRadius = 200f;
 
     //Boid Steering/Flocking Variables
@@ -58,7 +58,7 @@ public class Drone : Enemy {
     //mining Variables 
     public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
     public int mineCapacity = 20; 
-    public int mineLoaded; 
+
 
     public Vector3 MiningTarget;
     public bool isDroneFullFromMining = false;
@@ -185,13 +185,14 @@ public class Drone : Enemy {
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
 
             rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
+            dronefuel = dronefuel - 1;
         }
         else
         {
 
         }
 
-        dronefuel = dronefuel - 1;//<-- change base on distance not frame 
+         
 
     }
 
@@ -358,20 +359,24 @@ public class Drone : Enemy {
         //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
         //send scout 4 max
 
-        if (miningAsteroid == null)
+
+        if (miningAsteroid.GetComponent<Asteroid>().isDepleted == true)//Do I need to change miningAsteroid?
         {
-            Debug.Log("asteroid Destroy in drone class 1 ");
+            //topAsteroidCount in mothership should -1 
+            //Debug.Log("Is Asteroid depleted: " + miningAsteroid.GetComponent<Asteroid>().isDepleted);
+            //Debug.Log("Is Asteroid topAsteroidCount: " + motherShip.GetComponent<Mothership>().topAsteroidCount);
 
-            
-            //remove the miningAsteroid from Mothership resourceObject list 
-            //resourceObjects.remove(miningAsteroid);
-            //AsteroidDeath
+            motherShip.GetComponent<Mothership>().minustopAsteroidCount();//decease the topAsteroidCount back down otherwise only one elite drone 
+            motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
+            motherShip.GetComponent<Mothership>().eliteForagers.Remove(this.gameObject);
 
+            //miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);
         }
         else
         {
             if (isDroneFullFromMining == false)
             {
+                Debug.Log("MiningTarget" + MiningTarget);
                 MiningResource(MiningTarget);
                 Debug.DrawLine(transform.position, MiningTarget, Color.blue);//on the way to Asteroid
             }
@@ -391,18 +396,20 @@ public class Drone : Enemy {
                 //In range of mothership, relay information and reset to drone again
                 if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
                 {
-                    Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
-                    miningAsteroid.GetComponent<Asteroid>().minusResource(30);//<-- the asteroid has delay death..
+                    //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
+                   
 
-                    dronefuel = dronefuel + 5000;
+                    miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);//<-- the asteroid has delay death..
+
+                    dronefuel = dronefuel + 10000;
                     isDroneFullFromMining = false;
                 }
             }
         }
 
+        //droneBehaviour = DroneBehaviours.Idle;//<-----
 
 
-        
     }
 
     private void MiningResource(Vector3 miningPos)
@@ -417,15 +424,15 @@ public class Drone : Enemy {
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
 
             rb.AddRelativeForce(Vector3.forward * speed * 20 * Time.deltaTime);
+            dronefuel = dronefuel - 1;
         }
         else
         {
-            //this part was never called
-            isDroneFullFromMining = true;
-           
+            //this part was never called??
+            isDroneFullFromMining = true;       
         }
 
-        dronefuel = dronefuel - 1;//should be adjust to distance instead?
+       
 
     }
 
