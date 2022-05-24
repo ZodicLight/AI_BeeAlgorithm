@@ -57,10 +57,7 @@ public class Drone : Enemy {
     private float distanceRatio = 0.05f;
 
     //Fleeing
-    //private Vector3 tarVel;//need target to run away 
-    //private Vector3 tarPrevPos;
     private Vector3 FleeingPos;
-    //private float distanceRatio = 0.05f;
 
     //mining Variables 
     public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
@@ -99,15 +96,15 @@ public class Drone : Enemy {
         if (gameManager.gameStarted)
         {
             target = gameManager.playerDreadnaught;
-            //droneBehaviour = DroneBehaviours.Attacking;
+            droneBehaviour = DroneBehaviours.Attacking;
             //droneBehaviour = DroneBehaviours.Fleeing;
 
-            attackOrFlee = health * Friends();
+            //attackOrFlee = health * Friends();
 
-            if (attackOrFlee >= 1000)
-                droneBehaviour = DroneBehaviours.Attacking;
-            else if (attackOrFlee < 1000)
-                droneBehaviour = DroneBehaviours.Fleeing;
+            //if (attackOrFlee >= 1000)
+            //    droneBehaviour = DroneBehaviours.Attacking;
+            //else if (attackOrFlee < 1000)
+            //    droneBehaviour = DroneBehaviours.Fleeing;
 
         }
 
@@ -232,7 +229,7 @@ public class Drone : Enemy {
         }
         else
         {
-
+            //<-----
         }
     }
 
