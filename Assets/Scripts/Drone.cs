@@ -203,7 +203,7 @@ public class Drone : Enemy {
     private void Scouting()
     {
         //Debug.Log("Calling Scouting in Drone.cs");
-        //If no new resource object found
+        //If no new resource object found, than scout
         if (!newResourceObject)
         {
             //If close to scoutPosition, randomize new position to investigate within gamespace around mothership
@@ -247,6 +247,7 @@ public class Drone : Enemy {
             {
                 //dronefuel = dronefuel + 5000; Can't base on frame must be distance 
 
+                Debug.Log("Add Scout");
                 motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
                 motherShip.GetComponent<Mothership>().scouts.Remove(this.gameObject);
 
@@ -343,6 +344,43 @@ public class Drone : Enemy {
         //===============================================
         //resourceObjects.Count from mothership
 
+        if (miningAsteroid.GetComponent<Asteroid>().isDepleted == true)//Do I need to change miningAsteroid?
+        {
+            //Stop mining the resouce
+
+            Debug.Log("Add Forage");
+            motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
+            motherShip.GetComponent<Mothership>().foragers.Remove(this.gameObject);
+
+            droneBehaviour = DroneBehaviours.Idle;
+            miningAsteroid.GetComponent<Asteroid>().isBeingForaged = false;
+        }
+        else
+        {
+            if (isDroneFullFromMining == false)
+            {
+                //Mine - Move towards Asteroid and mine
+
+                //Debug.Log("MiningTarget" + MiningTarget);
+                MiningResource(MiningTarget);
+                Debug.DrawLine(transform.position, MiningTarget, Color.cyan);//on the way to Asteroid
+            }
+            else
+            {
+                //Return to mothership 
+                MoveTowardsTarget(motherShip.transform.position);//on the way to MotherShip
+                Debug.DrawLine(transform.position, motherShip.transform.position, Color.magenta);
+
+                //In range of mothership, relay information and reset to drone again
+                if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
+                {
+                    miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);//<-- the asteroid has delay death..
+
+                    dronefuel = dronefuel + 10000;
+                    isDroneFullFromMining = false;
+                }
+            }
+        }
 
     }
 
@@ -365,9 +403,12 @@ public class Drone : Enemy {
             //Debug.Log("Is Asteroid depleted: " + miningAsteroid.GetComponent<Asteroid>().isDepleted);
             //Debug.Log("Is Asteroid topAsteroidCount: " + motherShip.GetComponent<Mothership>().topAsteroidCount);
 
-            motherShip.GetComponent<Mothership>().minustopAsteroidCount();//decease the topAsteroidCount back down otherwise only one elite drone 
+            //motherShip.GetComponent<Mothership>().minustopAsteroidCount();//decease the topAsteroidCount back down otherwise only one elite drone 
+            Debug.Log("Add Elite");
             motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
             motherShip.GetComponent<Mothership>().eliteForagers.Remove(this.gameObject);
+
+            droneBehaviour = DroneBehaviours.Idle;
 
             //miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);
         }
@@ -375,7 +416,7 @@ public class Drone : Enemy {
         {
             if (isDroneFullFromMining == false)
             {
-                Debug.Log("MiningTarget" + MiningTarget);
+                //Debug.Log("MiningTarget" + MiningTarget);
                 MiningResource(MiningTarget);
                 Debug.DrawLine(transform.position, MiningTarget, Color.blue);//on the way to Asteroid
             }
@@ -412,7 +453,7 @@ public class Drone : Enemy {
     }
 
     private void MiningResource(Vector3 miningPos)
-    {//this i sthe code to find target 
+    {//this is the code to find target 
 
         //Rotate and move towards target if out of range
         if ((Vector3.Distance(miningPos, transform.position) > targetRadius) && !isDroneFullFromMining)
@@ -431,12 +472,5 @@ public class Drone : Enemy {
             isDroneFullFromMining = true;       
         }
 
-       
-
     }
-
-
-
-
-
 }

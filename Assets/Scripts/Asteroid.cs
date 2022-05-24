@@ -19,7 +19,6 @@ public class Asteroid : MonoBehaviour
         resource = Random.Range(10, 100);
         isDepleted = false;
 
-
     }
 
     // Update is called once per frame
@@ -29,6 +28,7 @@ public class Asteroid : MonoBehaviour
         {
             //Destroy(this.gameObject);
             isDepleted = true;
+
 
             //Instantiate(deathEffect, transform.position, transform.rotation);
             //Instantiate(deathSound, transform.position, transform.rotation);
