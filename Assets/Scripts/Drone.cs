@@ -72,6 +72,8 @@ public class Drone : Enemy {
 
     public GameObject miningAsteroid;//Asteroid object from Mothership Class
 
+    //Drone Utility Variable
+    private float attackOrFlee;
 
 
     // Use this for initialization
@@ -98,7 +100,15 @@ public class Drone : Enemy {
         {
             target = gameManager.playerDreadnaught;
             //droneBehaviour = DroneBehaviours.Attacking;
-            droneBehaviour = DroneBehaviours.Fleeing;
+            //droneBehaviour = DroneBehaviours.Fleeing;
+
+            attackOrFlee = health * Friends();
+
+            if (attackOrFlee >= 1000)
+                droneBehaviour = DroneBehaviours.Attacking;
+            else if (attackOrFlee < 1000)
+                droneBehaviour = DroneBehaviours.Fleeing;
+
         }
 
 
@@ -138,6 +148,23 @@ public class Drone : Enemy {
         }
     }
 
+    //Calculate number of Friendly Units in targetRadius
+    private int Friends()
+    {
+
+        int clusterStrength = 0;
+
+        for (int i = 0; i < gameManager.enemyList.Length; i++)
+        {
+
+            if (Vector3.Distance(transform.position, gameManager.enemyList[i].transform.position) < targetRadius)
+            {
+                clusterStrength++;
+            }
+        }
+
+        return clusterStrength;
+    }
 
     private void BoidBehaviour()
     {
