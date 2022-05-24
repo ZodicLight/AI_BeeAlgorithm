@@ -251,7 +251,11 @@ public class Drone : Enemy {
                 motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
                 motherShip.GetComponent<Mothership>().scouts.Remove(this.gameObject);
 
-                motherShip.GetComponent<Mothership>().resourceObjects.Add(newResourceObject);
+                //Double check to see if the Mothership already knows about it and return it if not
+                if (motherShip.GetComponent<Mothership>().resourceObjects.Contains(newResourceObject) == false)
+                {
+                    motherShip.GetComponent<Mothership>().resourceObjects.Add(newResourceObject);
+                }
 
                 newResourceVal = 0;
                 newResourceObject = null;
