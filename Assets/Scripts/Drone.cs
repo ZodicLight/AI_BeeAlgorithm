@@ -440,8 +440,7 @@ public class Drone : Enemy {
                 if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
                 {
                     //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
-                   
-
+                    motherShip.GetComponent<Mothership>().addtotalMineCollected(mineCapacity);
                     miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);//<-- the asteroid has delay death..
 
                     dronefuel = dronefuel + 10000;

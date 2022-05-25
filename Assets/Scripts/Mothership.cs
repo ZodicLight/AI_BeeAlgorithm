@@ -190,7 +190,7 @@ public class Mothership : MonoBehaviour {
         }
 
         // Log of drone type count
-        Debug.Log("Drones: " + drones.Count + " Scouts: " + scouts.Count + " Elite: " + eliteForagers.Count + " Forages: " + foragers.Count);
+        Debug.Log("Drones: " + drones.Count + " Scouts: " + scouts.Count + " Elite: " + eliteForagers.Count + " Forages: " + foragers.Count + " TotalMineCollected: " + totalMineCollected);
 
         if (drones.Count + scouts.Count + eliteForagers.Count +  foragers.Count > 20 )
         {
@@ -224,6 +224,13 @@ public class Mothership : MonoBehaviour {
     //        topAsteroidCount = topAsteroidCount - 1;
 
     //}
+
+    public void addtotalMineCollected(int mineCapacity)
+    {
+        //tested: passed
+        totalMineCollected = totalMineCollected + mineCapacity;
+        //Debug.Log("TotalMineCollected: " + totalMineCollected);
+    }
 
 }
 
