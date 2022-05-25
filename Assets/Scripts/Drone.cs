@@ -247,22 +247,23 @@ public class Drone : Enemy {
             {
                 //dronefuel = dronefuel + 5000; Can't base on frame must be distance 
 
-                Debug.Log("Add Scout");
+                dronefuel = dronefuel + 10000;
+                //Debug.Log("Add Scout");
                 motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
                 motherShip.GetComponent<Mothership>().scouts.Remove(this.gameObject);
 
                 //Double check to see if the Mothership already knows about it and return it if not
                 if (motherShip.GetComponent<Mothership>().resourceObjects.Contains(newResourceObject) == false)
-                {
-                    motherShip.GetComponent<Mothership>().resourceObjects.Add(newResourceObject);
-                }
+                    {
+                        motherShip.GetComponent<Mothership>().resourceObjects.Add(newResourceObject);
+                    }
 
                 newResourceVal = 0;
                 newResourceObject = null;
 
 
                 droneBehaviour = DroneBehaviours.Idle;//<-----
-                
+
 
             }
 
@@ -331,8 +332,6 @@ public class Drone : Enemy {
 
 
         }
-
-
     }
 
     private void Foraging()
