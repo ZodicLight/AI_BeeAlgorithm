@@ -50,10 +50,14 @@ public class Drone : Enemy {
     private int newResourceVal;
     public GameObject newResourceObject;
 
+    //Attacking 
     private Vector3 tarVel;
     private Vector3 tarPrevPos;
     private Vector3 attackPos;
     private float distanceRatio = 0.05f;
+
+    //Fleeing
+    private Vector3 FleeingPos;
 
     //mining Variables 
     public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
@@ -65,6 +69,8 @@ public class Drone : Enemy {
 
     public GameObject miningAsteroid;//Asteroid object from Mothership Class
 
+    //Drone Utility Variable
+    private float attackOrFlee;
 
 
     // Use this for initialization
@@ -90,14 +96,24 @@ public class Drone : Enemy {
         if (gameManager.gameStarted)
         {
             target = gameManager.playerDreadnaught;
-            droneBehaviour = DroneBehaviours.Attacking;
+
+            //droneBehaviour = DroneBehaviours.Attacking;
+
+            //droneBehaviour = DroneBehaviours.Fleeing;
+
+            attackOrFlee = health * Friends();
+
         }
 
 
-        ////Move towards valid targets
-        if (target)//comment this line for attack and prey to work 
-            MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
+        if (attackOrFlee >= 1000)
+            droneBehaviour = DroneBehaviours.Attacking;
+        else if (attackOrFlee < 1000)
+            droneBehaviour = DroneBehaviours.Fleeing;
 
+        ////Move towards valid targets
+        //if (target)//comment this line for attack and prey to work 
+        //    MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
 
 
         BoidBehaviour();
@@ -121,9 +137,33 @@ public class Drone : Enemy {
              
                 Attacking();
                 break;
+            case DroneBehaviours.Fleeing:
+
+                Fleeing();
+                break;
+
+
+                
         }
     }
 
+    //Calculate number of Friendly Units in targetRadius
+    private int Friends()
+    {
+
+        int clusterStrength = 0;
+
+        for (int i = 0; i < gameManager.enemyList.Length; i++)
+        {
+
+            if (Vector3.Distance(transform.position, gameManager.enemyList[i].transform.position) < targetRadius)
+            {
+                clusterStrength++;
+            }
+        }
+
+        return clusterStrength;
+    }
 
     private void BoidBehaviour()
     {
@@ -191,10 +231,9 @@ public class Drone : Enemy {
         }
         else
         {
-
+            //<-----
         }
     }
-
 
     //Drone FSM Behaviour - Scouting
     //***need update with fuel/cap 
@@ -329,10 +368,51 @@ public class Drone : Enemy {
             //{
 
             //}
-
-
         }
     }
+
+    private void Fleeing()
+    {
+        //1.Calculate flee position
+        //2.If not in range of flee position, move towards it
+        //3.If out of range of the Player, head back to the MotherShip
+        //4.Resupply at the MotherShip
+
+
+        //Calculate target's velocity (without using RB)
+        tarVel = (target.transform.position - tarPrevPos) / Time.deltaTime;//stay away from this location
+        tarPrevPos = target.transform.position;//stay away from this location
+
+        //move toward Mothership and away from player 
+        Vector3 position;
+        position.x = motherShip.transform.position.x + Random.Range(-100, 100);
+        position.y = motherShip.transform.position.y + Random.Range(-100, 100);
+        position.z = motherShip.transform.position.z + Random.Range(-100, 100);
+
+        FleeingPos = motherShip.transform.position;
+        //FleeingPos = position;
+
+
+        //Calculate intercept attack position (p = t + r * d * v)
+        //=======================================================
+        //FleeingPos = target.transform.position + distanceRatio * Vector3.Distance(transform.position, target.transform.position) * tarVel;
+
+        //attackPos.y = attackPos.y + 10;//Not attacking 
+        Debug.DrawLine(transform.position, FleeingPos, Color.blue);
+
+        // Not in range of intercept vector - move into position
+        if (Vector3.Distance(transform.position, motherShip.transform.position) > targetRadius)
+            MoveTowardsTarget(FleeingPos);//Change from MoveTowardsTarget(attackPos);
+        else
+        {
+            //Look at target - Lerp Towards target
+            targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
+        }
+    }
+
+
 
     private void Foraging()
     {
