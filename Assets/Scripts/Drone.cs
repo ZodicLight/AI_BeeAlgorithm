@@ -111,7 +111,7 @@ public class Drone : Enemy {
         else
         {
             ////Move towards valid targets
-            if (target)//comment this line for attack and prey to work 
+            if (target)//comment this line for attack and prey to work  
                 MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
         }
 
