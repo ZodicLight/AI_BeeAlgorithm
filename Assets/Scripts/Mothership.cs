@@ -22,7 +22,7 @@ public class Mothership : MonoBehaviour {
     //20 drones in total
     private int maxScouts = 4;
     private int maxElites = 2;
-    private int maxForagers = 3;//the rest is just foragers?
+    private int maxForagers = 10;
 
 
     private float forageTimer;
@@ -172,21 +172,6 @@ public class Mothership : MonoBehaviour {
                         }
                     }
              }
-
-
-            
-                //topAsteroidCount starts at zero thus this gets the position of the highest resourced Asteroid
-
-
-            //this two 
-            //if (eliteForagers.Count <= 2) {
-
-
-            //if (topAsteroidCount < 2)// 0 , 1
-            //{
-            //    Debug.Log("topAsteroidCount: " + topAsteroidCount);
-            //    topAsteroidCount = topAsteroidCount + 1;
-            //}
         }
 
         // Log of drone type count

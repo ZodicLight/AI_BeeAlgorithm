@@ -206,6 +206,7 @@ public class Drone : Enemy {
         //If no new resource object found, than scout
         if (!newResourceObject)
         {
+            Debug.Log("scouttimer: " + scoutTimer);
             //If close to scoutPosition, randomize new position to investigate within gamespace around mothership
             if (Vector3.Distance(transform.position, scoutPosition) < detectionRadius && Time.time > scoutTimer)
             {
@@ -262,8 +263,7 @@ public class Drone : Enemy {
                 newResourceObject = null;
 
 
-                droneBehaviour = DroneBehaviours.Idle;//<-----
-
+                droneBehaviour = DroneBehaviours.Idle;
 
             }
 
@@ -349,7 +349,7 @@ public class Drone : Enemy {
 
         if (miningAsteroid.GetComponent<Asteroid>().isDepleted == true)//Do I need to change miningAsteroid?
         {
-            //Stop mining the resouce
+            //Stop mining the resource
 
             Debug.Log("Add Forage");
             motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
@@ -430,7 +430,6 @@ public class Drone : Enemy {
                 MoveTowardsTarget(motherShip.transform.position);//on the way to MotherShip
                 Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
 
-
                 //how can I call a function just once here 
 
                 //on return trip 
@@ -451,7 +450,6 @@ public class Drone : Enemy {
         }
 
         //droneBehaviour = DroneBehaviours.Idle;//<-----Elite won't show up
-
 
     }
 
