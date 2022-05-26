@@ -97,23 +97,25 @@ public class Drone : Enemy {
         {
             target = gameManager.playerDreadnaught;
 
+            Debug.Log("Game Started");
             //droneBehaviour = DroneBehaviours.Attacking;
-
             //droneBehaviour = DroneBehaviours.Fleeing;
 
             attackOrFlee = health * Friends();
 
+            if (attackOrFlee >= 1000)
+                droneBehaviour = DroneBehaviours.Attacking;
+            else if (attackOrFlee < 1000)
+                droneBehaviour = DroneBehaviours.Fleeing;
+        }
+        else
+        {
+            ////Move towards valid targets
+            if (target)//comment this line for attack and prey to work 
+                MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
         }
 
-
-        if (attackOrFlee >= 1000)
-            droneBehaviour = DroneBehaviours.Attacking;
-        else if (attackOrFlee < 1000)
-            droneBehaviour = DroneBehaviours.Fleeing;
-
-        ////Move towards valid targets
-        //if (target)//comment this line for attack and prey to work 
-        //    MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
+       
 
 
         BoidBehaviour();
@@ -245,7 +247,7 @@ public class Drone : Enemy {
         //If no new resource object found, than scout
         if (!newResourceObject)
         {
-            Debug.Log("scouttimer: " + scoutTimer);
+            //Debug.Log("scouttimer: " + scoutTimer);
             //If close to scoutPosition, randomize new position to investigate within gamespace around mothership
             if (Vector3.Distance(transform.position, scoutPosition) < detectionRadius && Time.time > scoutTimer)
             {

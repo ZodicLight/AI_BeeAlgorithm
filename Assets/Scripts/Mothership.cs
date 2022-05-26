@@ -175,7 +175,7 @@ public class Mothership : MonoBehaviour {
         }
 
         // Log of drone type count
-        Debug.Log("Drones: " + drones.Count + " Scouts: " + scouts.Count + " Elite: " + eliteForagers.Count + " Forages: " + foragers.Count + " TotalMineCollected: " + totalMineCollected);
+        //Debug.Log("Drones: " + drones.Count + " Scouts: " + scouts.Count + " Elite: " + eliteForagers.Count + " Forages: " + foragers.Count + " TotalMineCollected: " + totalMineCollected);
 
         if (drones.Count + scouts.Count + eliteForagers.Count +  foragers.Count > 20 )
         {
