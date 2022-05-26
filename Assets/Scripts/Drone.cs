@@ -96,22 +96,24 @@ public class Drone : Enemy {
         if (gameManager.gameStarted)
         {
             target = gameManager.playerDreadnaught;
-            droneBehaviour = DroneBehaviours.Attacking;
+
+            //droneBehaviour = DroneBehaviours.Attacking;
+
             //droneBehaviour = DroneBehaviours.Fleeing;
 
-            //attackOrFlee = health * Friends();
-
-            //if (attackOrFlee >= 1000)
-            //    droneBehaviour = DroneBehaviours.Attacking;
-            //else if (attackOrFlee < 1000)
-            //    droneBehaviour = DroneBehaviours.Fleeing;
+            attackOrFlee = health * Friends();
 
         }
 
 
+        if (attackOrFlee >= 1000)
+            droneBehaviour = DroneBehaviours.Attacking;
+        else if (attackOrFlee < 1000)
+            droneBehaviour = DroneBehaviours.Fleeing;
+
         ////Move towards valid targets
-        if (target)//comment this line for attack and prey to work 
-            MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
+        //if (target)//comment this line for attack and prey to work 
+        //    MoveTowardsTarget(target.transform.position);//comment this line for attack and prey to work 
 
 
         BoidBehaviour();

@@ -68,6 +68,7 @@ TrailRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -183,12 +184,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d019ed01e7391f748aa5b7dea8fd5f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 200
   deathEffect: {fileID: 168250, guid: 5eb4293102a9d694ebf1affc13c4cff0, type: 3}
   deathSound: {fileID: 103974, guid: 5682ac4627f4d5248bd4fdbc79756da8, type: 3}
   speed: 50
   target: {fileID: 0}
   targetRadius: 200
+  separationDistance: 1
+  cohesionDistance: 2
+  separationStrength: 1
+  cohesionStrength: 1
+  droneBehaviour: 0
+  motherShip: {fileID: 0}
+  scoutPosition: {x: 0, y: 0, z: 0}
+  newResourceObject: {fileID: 0}
+  dronefuel: 0
+  mineCapacity: 20
+  MiningTarget: {x: 0, y: 0, z: 0}
+  isDroneFullFromMining: 0
+  miningAsteroid: {fileID: 0}
 --- !u!1 &1468909202175776
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +293,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &1763680127460428
@@ -337,6 +352,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -361,6 +377,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!95 &95680166613509448
 Animator:
   serializedVersion: 3
