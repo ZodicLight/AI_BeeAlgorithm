@@ -377,6 +377,7 @@ public class Drone : Enemy {
                 //In range of mothership, relay information and reset to drone again
                 if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
                 {
+                    motherShip.GetComponent<Mothership>().addtotalMineCollected(mineCapacity);
                     miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);//<-- the asteroid has delay death..
 
                     dronefuel = dronefuel + 10000;
@@ -449,7 +450,7 @@ public class Drone : Enemy {
             }
         }
 
-        //droneBehaviour = DroneBehaviours.Idle;//<-----
+        //droneBehaviour = DroneBehaviours.Idle;//<-----Elite won't show up
 
 
     }
