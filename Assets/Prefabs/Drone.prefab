@@ -190,10 +190,10 @@ MonoBehaviour:
   speed: 50
   target: {fileID: 0}
   targetRadius: 200
-  separationDistance: 1
-  cohesionDistance: 2
-  separationStrength: 1
-  cohesionStrength: 1
+  separationDistance: 25
+  cohesionDistance: 50
+  separationStrength: 250
+  cohesionStrength: 25
   droneBehaviour: 0
   motherShip: {fileID: 0}
   scoutPosition: {x: 0, y: 0, z: 0}

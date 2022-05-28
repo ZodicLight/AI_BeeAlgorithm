@@ -16,10 +16,10 @@ public class Drone : Enemy {
     public float targetRadius = 200f;
 
     //Boid Steering/Flocking Variables
-    public float separationDistance = 1.0f;//25.0f
-    public float cohesionDistance = 2.0f;//50.0f
-    public float separationStrength = 1.0f;//250.0f
-    public float cohesionStrength = 1.0f;//25.0f+
+    public float separationDistance = 25.0f;//25.0f
+    public float cohesionDistance = 50.0f;//50.0f
+    public float separationStrength = 250.0f;//250.0f
+    public float cohesionStrength = 25.0f;//25.0f+
     private Vector3 cohesionPos = new Vector3(0f, 0f, 0f);
     private int boidIndex = 0;
 
@@ -91,10 +91,14 @@ public class Drone : Enemy {
 
     // Update is called once per frame
     void Update() {
+        
+        
 
         //Acquire player if spawned in
         if (gameManager.gameStarted)
         {
+            BoidBehaviour();
+
             target = gameManager.playerDreadnaught;
 
             Debug.Log("Game Started");
@@ -116,9 +120,7 @@ public class Drone : Enemy {
         }
 
        
-
-
-        BoidBehaviour();
+        
 
         switch (droneBehaviour)
         {
