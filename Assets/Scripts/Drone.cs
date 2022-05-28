@@ -69,9 +69,18 @@ public class Drone : Enemy {
 
     public GameObject miningAsteroid;//Asteroid object from Mothership Class
 
+    //Shoot Laser==========================================
+
+    private GameObject droneTarget;
+    private bool targetLocked;
+    
+    public GameObject droneLaser;
+    private float fireTimer;
+    private bool shotReady;
+  
+
     //Drone Utility Variable
     private float attackOrFlee;
-
 
     // Use this for initialization
     void Start() {
@@ -85,6 +94,8 @@ public class Drone : Enemy {
 
         //Part 1 - give each drone a random amount of fuel.
         dronefuel = Random.Range(8000, 10000);
+
+        shotReady = true;
 
 
     }
@@ -101,7 +112,7 @@ public class Drone : Enemy {
 
             target = gameManager.playerDreadnaught;
 
-            Debug.Log("Game Started");
+            //Debug.Log("Game Started");
             //droneBehaviour = DroneBehaviours.Attacking;
             //droneBehaviour = DroneBehaviours.Fleeing;
 
@@ -111,6 +122,9 @@ public class Drone : Enemy {
                 droneBehaviour = DroneBehaviours.Attacking;
             else if (attackOrFlee < 1000)
                 droneBehaviour = DroneBehaviours.Fleeing;
+
+
+            
         }
         else
         {
@@ -151,6 +165,25 @@ public class Drone : Enemy {
         }
     }
 
+    //Shoot Laser==========================================
+    
+    void Shoot()
+    {
+        //Transform _bullet = Instantiate(droneLaser.transform, transform.position, Quaternion.identity);
+        Instantiate(droneLaser.transform, transform.position, Quaternion.identity);
+        shotReady = false;
+        //StartCoroutine()
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            droneTarget = other.gameObject;
+            targetLocked = true; 
+        }
+    }
+
     //Calculate number of Friendly Units in targetRadius
     private int Friends()
     {
@@ -176,7 +209,7 @@ public class Drone : Enemy {
         boidIndex++;
 
         //Check if last boid in Enemy list
-        if (boidIndex >= gameManager.enemyList.Length)//why 19? 20?
+        if (boidIndex >= gameManager.enemyList.Length)
         {
             //Re-Compute the cohesionForce
             Vector3 cohesiveForce = (cohesionStrength / Vector3.Distance(cohesionPos, transform.position)) * (cohesionPos - transform.position);
@@ -364,6 +397,16 @@ public class Drone : Enemy {
             targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
+
+            //Shoot Laser ==========================================================
+            if (targetLocked)
+            {
+                //this.targetLocked.LookAt(target);
+                if (shotReady)
+                {
+                    Shoot();
+                }
+            }
 
             //Fire Weapons at target
             //...

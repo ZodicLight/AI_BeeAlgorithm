@@ -406,7 +406,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &57315418 stripped
@@ -1074,7 +1075,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &298728827 stripped
@@ -2874,7 +2876,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &859548709 stripped
@@ -3178,7 +3181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &969728877 stripped
@@ -3649,6 +3653,7 @@ MonoBehaviour:
   eliteForagers: []
   foragers: []
   resourceObjects: []
+  topAsteroidCount: 0
 --- !u!1 &1125849724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 125034, guid: 7c7d9ba83b627a8439af1bc6c103b3fb, type: 3}
@@ -3683,7 +3688,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &1125849729 stripped
@@ -4224,7 +4230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &1398445640 stripped
@@ -4359,7 +4366,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &1414393154 stripped
@@ -4563,7 +4571,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &1455670324 stripped
@@ -4716,7 +4725,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!1 &1504115634
@@ -5345,7 +5355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &1710959651 stripped
@@ -6608,7 +6619,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!1 &2008879315
@@ -6768,7 +6780,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!4 &2077786670 stripped
@@ -6863,7 +6876,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 50
   isBeingForaged: 0
-  mined: 0
+  droneLoad: 0
+  isDepleted: 0
   deathEffect: {fileID: 0}
   deathSound: {fileID: 0}
 --- !u!1 &2113510934

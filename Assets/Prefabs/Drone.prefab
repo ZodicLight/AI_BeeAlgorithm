@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 96389119080637906}
   - component: {fileID: 65324240927124672}
   - component: {fileID: 114758207600209994}
+  - component: {fileID: -797837467388775848}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Enemy
@@ -203,6 +204,20 @@ MonoBehaviour:
   MiningTarget: {x: 0, y: 0, z: 0}
   isDroneFullFromMining: 0
   miningAsteroid: {fileID: 0}
+  droneLaser: {fileID: 164730, guid: f5d4a882bacfd144287648b9a7528ca2, type: 3}
+--- !u!135 &-797837467388775848
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131870754492908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1468909202175776
 GameObject:
   m_ObjectHideFlags: 0
