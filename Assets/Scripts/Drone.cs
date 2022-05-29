@@ -171,11 +171,11 @@ public class Drone : Enemy {
     
     void Shoot()
     {
-        //Transform _bullet = Instantiate(droneLaser.transform, transform.position, Quaternion.identity);
-        Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        Transform _bullet = Instantiate(droneBullet.transform, transform.position, Quaternion.identity);
+        //Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         //_bullet.transform.rotation = transform.LookAt(target.transform).rotation;
         //_bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
-        
+
         shotReady = false;
         StartCoroutine(FireRate());
         //StartCoroutine()
