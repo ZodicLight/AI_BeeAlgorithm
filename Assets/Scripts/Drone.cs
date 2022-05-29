@@ -72,7 +72,6 @@ public class Drone : Enemy {
     //Shoot Laser==========================================
 
     private GameObject droneTarget;
-    private bool targetLocked;
     
     public GameObject droneBullet;
     private float fireTimer = 10;
@@ -167,35 +166,7 @@ public class Drone : Enemy {
         }
     }
 
-    //Shoot Laser==========================================
     
-    void Shoot()
-    {
-        Transform _bullet = Instantiate(droneBullet.transform, transform.position, Quaternion.identity);
-        //Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        //_bullet.transform.rotation = transform.LookAt(target.transform).rotation;
-        //_bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
-
-        shotReady = false;
-        StartCoroutine(FireRate());
-        //StartCoroutine()
-    }
-
-    IEnumerator FireRate()
-    {
-        yield return new WaitForSeconds(fireTimer);
-        shotReady = true;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player")
-        {
-            droneTarget = other.gameObject;
-            targetLocked = true; 
-        }
-    }
-
     //Calculate number of Friendly Units in targetRadius
     private int Friends()
     {
@@ -410,26 +381,39 @@ public class Drone : Enemy {
             adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
 
-            //Shoot Laser ==========================================================
-            if (targetLocked)
+            //Shoot==========================================================
+
+            if (shotReady)
             {
-                transform.LookAt(target.transform);
-                //this.targetLocked.LookAt(target);
-                if (shotReady)
-                {
-                    Shoot();
-                }
+                Shoot();
             }
 
-            //Fire Weapons at target
-            //...
-
-            //if(Time.time > fireTimer)
-            //{
-
-            //}
         }
     }
+
+    //Shoot Laser==========================================
+
+    void Shoot()
+    {
+        Instantiate(droneBullet.transform, this.gameObject.transform.position, this.gameObject.transform.rotation);//better
+        //Transform _bullet = Instantiate(droneBullet.transform, transform.position, Quaternion.identity);
+
+
+        //Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        //_bullet.transform.rotation = transform.LookAt(target.transform).rotation;
+        //_bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
+
+        shotReady = false;
+        StartCoroutine(FireRate());
+        //StartCoroutine()
+    }
+
+    IEnumerator FireRate()
+    {
+        yield return new WaitForSeconds(fireTimer);
+        shotReady = true;
+    }
+
 
     private void Fleeing()
     {
