@@ -74,9 +74,11 @@ public class Drone : Enemy {
     private GameObject droneTarget;
     private bool targetLocked;
     
-    public GameObject droneLaser;
-    private float fireTimer;
+    public GameObject droneBullet;
+    private float fireTimer = 10;
     private bool shotReady;
+
+    public GameObject bulletSpawnPoint;
   
 
     //Drone Utility Variable
@@ -95,7 +97,7 @@ public class Drone : Enemy {
         //Part 1 - give each drone a random amount of fuel.
         dronefuel = Random.Range(8000, 10000);
 
-        shotReady = true;
+        shotReady = true;//shooting
 
 
     }
@@ -170,9 +172,19 @@ public class Drone : Enemy {
     void Shoot()
     {
         //Transform _bullet = Instantiate(droneLaser.transform, transform.position, Quaternion.identity);
-        Instantiate(droneLaser.transform, transform.position, Quaternion.identity);
+        Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        //_bullet.transform.rotation = transform.LookAt(target.transform).rotation;
+        //_bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
+        
         shotReady = false;
+        StartCoroutine(FireRate());
         //StartCoroutine()
+    }
+
+    IEnumerator FireRate()
+    {
+        yield return new WaitForSeconds(fireTimer);
+        shotReady = true;
     }
 
     void OnTriggerEnter(Collider other)
@@ -401,6 +413,7 @@ public class Drone : Enemy {
             //Shoot Laser ==========================================================
             if (targetLocked)
             {
+                transform.LookAt(target.transform);
                 //this.targetLocked.LookAt(target);
                 if (shotReady)
                 {
@@ -450,12 +463,15 @@ public class Drone : Enemy {
         // Not in range of intercept vector - move into position
         if (Vector3.Distance(transform.position, motherShip.transform.position) > targetRadius)
             MoveTowardsTarget(FleeingPos);//Change from MoveTowardsTarget(attackPos);
+        
         else
         {
             //Look at target - Lerp Towards target
             targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
+            
+            health = health + 200;//get to the mothership
         }
     }
 
