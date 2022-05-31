@@ -75,7 +75,7 @@ public class Drone : Enemy {
     private GameObject droneTarget;
     
     public GameObject droneBullet;
-    private float fireTimer = 10;
+    private float fireTimer = 7;
     private bool shotReady;
 
     public GameObject bulletSpawnPoint;
@@ -104,8 +104,6 @@ public class Drone : Enemy {
 
     // Update is called once per frame
     void Update() {
-        
-        
 
         //Acquire player if spawned in
         if (gameManager.gameStarted)
@@ -119,6 +117,20 @@ public class Drone : Enemy {
             //droneBehaviour = DroneBehaviours.Fleeing;
 
             attackOrFlee = health * Friends();
+
+            if (dronefuel >= 5000)
+            {
+                if (attackOrFlee >= 1000)
+                    droneBehaviour = DroneBehaviours.Attacking;
+                else if (attackOrFlee < 2000)//1000
+                    droneBehaviour = DroneBehaviours.Fleeing;
+            }
+            else
+            {
+                droneBehaviour = DroneBehaviours.Fleeing;
+            }
+
+                
 
             if (attackOrFlee >= 1000)
                 droneBehaviour = DroneBehaviours.Attacking;
@@ -249,8 +261,10 @@ public class Drone : Enemy {
             dronefuel = dronefuel - 1;
         }
         else
+        {
 
         }
+
     }
 
     //Drone FSM Behaviour - Scouting
@@ -447,6 +461,7 @@ public class Drone : Enemy {
         else
         {
             health = health + 20;//get to the mothership
+            dronefuel = dronefuel + 10000;
             isArrived = false;
 
 
