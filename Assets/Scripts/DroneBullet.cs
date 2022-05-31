@@ -5,7 +5,7 @@ using UnityEngine;
 public class DroneBullet : MonoBehaviour
 {
     public float movementSpeed;
-    private float Timer = 0.1f;
+    private float Timer = 0.001f;
 
     // Update is called once per frame
     void Update()
@@ -16,6 +16,7 @@ public class DroneBullet : MonoBehaviour
         {
             yield return new WaitForSeconds(Timer);
             Destroy(this.gameObject);
+            Debug.Log("Bullet destory");
         }
         
     }

@@ -13,7 +13,7 @@ public class Drone : Enemy {
     private float adjRotSpeed;
     private Quaternion targetRotation;
     public GameObject target;//we suppose to use it??
-    public float targetRadius = 200f;
+    public float targetRadius = 20f;//200f
 
     //Boid Steering/Flocking Variables
     public float separationDistance = 25.0f;//25.0f
@@ -58,6 +58,7 @@ public class Drone : Enemy {
 
     //Fleeing
     private Vector3 FleeingPos;
+    private bool isArrived = false;
 
     //mining Variables 
     public int dronefuel;   // this is for Part 1 - fitness heuristic (fuel based)
@@ -121,11 +122,9 @@ public class Drone : Enemy {
 
             if (attackOrFlee >= 1000)
                 droneBehaviour = DroneBehaviours.Attacking;
-            else if (attackOrFlee < 1000)
+            else if (attackOrFlee < 2000)//1000
                 droneBehaviour = DroneBehaviours.Fleeing;
 
-
-            
         }
         else
         {
@@ -250,8 +249,7 @@ public class Drone : Enemy {
             dronefuel = dronefuel - 1;
         }
         else
-        {
-            //<-----
+
         }
     }
 
@@ -395,17 +393,11 @@ public class Drone : Enemy {
 
     void Shoot()
     {
-        Instantiate(droneBullet.transform, this.gameObject.transform.position, this.gameObject.transform.rotation);//better
-        //Transform _bullet = Instantiate(droneBullet.transform, transform.position, Quaternion.identity);
-
-
-        //Transform _bullet = Instantiate(droneBullet.transform, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        //_bullet.transform.rotation = transform.LookAt(target.transform).rotation;
-        //_bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
+        Instantiate(droneBullet.transform, this.gameObject.transform.position, this.gameObject.transform.rotation);
 
         shotReady = false;
         StartCoroutine(FireRate());
-        //StartCoroutine()
+
     }
 
     IEnumerator FireRate()
@@ -417,47 +409,51 @@ public class Drone : Enemy {
 
     private void Fleeing()
     {
-        //1.Calculate flee position
-        //2.If not in range of flee position, move towards it
+        //1.Calculate flee position(done)
+        //2.If not in range of flee position, move towards it(done)
         //3.If out of range of the Player, head back to the MotherShip
-        //4.Resupply at the MotherShip
-
-
-        //Calculate target's velocity (without using RB)
-        tarVel = (target.transform.position - tarPrevPos) / Time.deltaTime;//stay away from this location
-        tarPrevPos = target.transform.position;//stay away from this location
-
-        //move toward Mothership and away from player 
+        //4.Resupply at the MotherShip    
+        
+        //move toward between Mothership and player 
         Vector3 position;
-        position.x = motherShip.transform.position.x + Random.Range(-100, 100);
-        position.y = motherShip.transform.position.y + Random.Range(-100, 100);
-        position.z = motherShip.transform.position.z + Random.Range(-100, 100);
+        position.x = motherShip.transform.position.x + (target.transform.position.x - motherShip.transform.position.x) / 2;
+        position.y = motherShip.transform.position.y + (target.transform.position.y - motherShip.transform.position.y) / 2;
+        position.z = motherShip.transform.position.z + (target.transform.position.z - motherShip.transform.position.z) / 2;
 
-        FleeingPos = motherShip.transform.position;
-        //FleeingPos = position;
-
-
-        //Calculate intercept attack position (p = t + r * d * v)
-        //=======================================================
-        //FleeingPos = target.transform.position + distanceRatio * Vector3.Distance(transform.position, target.transform.position) * tarVel;
-
-        //attackPos.y = attackPos.y + 10;//Not attacking 
-        Debug.DrawLine(transform.position, FleeingPos, Color.blue);
+        //FleeingPos = motherShip.transform.position;
+        FleeingPos = position;
 
         // Not in range of intercept vector - move into position
-        if (Vector3.Distance(transform.position, motherShip.transform.position) > targetRadius)
+        if (Vector3.Distance(transform.position, FleeingPos) > targetRadius && isArrived == false)//motherShip.transform.position
+        {
             MoveTowardsTarget(FleeingPos);//Change from MoveTowardsTarget(attackPos);
-        
+            Debug.DrawLine(transform.position, FleeingPos, Color.yellow);
+        }
         else
         {
             //Look at target - Lerp Towards target
-            targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            targetRotation = Quaternion.LookRotation(motherShip.transform.position - transform.position);//target.transform.position
             adjRotSpeed = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, adjRotSpeed);
-            
-            health = health + 200;//get to the mothership
+            isArrived = true; 
+
         }
+
+        if (Vector3.Distance(transform.position, motherShip.transform.position) > targetRadius && isArrived == true)//motherShip.transform.position
+        {
+            MoveTowardsTarget(motherShip.transform.position);//Change from MoveTowardsTarget(attackPos);
+            Debug.DrawLine(transform.position, FleeingPos, Color.green);
+        }
+        else
+        {
+            health = health + 20;//get to the mothership
+            isArrived = false;
+
+
+        }
+
     }
+
 
 
 
