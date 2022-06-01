@@ -317,9 +317,8 @@ public class Drone : Enemy {
             //In range of mothership, relay information and reset to drone again
             if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
             {
-                //dronefuel = dronefuel + 5000; Can't base on frame must be distance 
 
-                dronefuel = dronefuel + 10000;
+                
                 //Debug.Log("Add Scout");
                 motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
                 motherShip.GetComponent<Mothership>().scouts.Remove(this.gameObject);
@@ -334,6 +333,7 @@ public class Drone : Enemy {
                 newResourceObject = null;
 
 
+                dronefuel = dronefuel + 10000;//test1
                 droneBehaviour = DroneBehaviours.Idle;
 
             }
@@ -460,7 +460,12 @@ public class Drone : Enemy {
         }
         else
         {
-            health = health + 20;//get to the mothership
+            if(health < 100)
+            {
+                health = health + 100;
+            }
+            
+            
             dronefuel = dronefuel + 10000;
             isArrived = false;
 
@@ -518,7 +523,12 @@ public class Drone : Enemy {
                     motherShip.GetComponent<Mothership>().addtotalMineCollected(mineCapacity);
                     miningAsteroid.GetComponent<Asteroid>().minusResource(mineCapacity);//<-- the asteroid has delay death..
 
-                    dronefuel = dronefuel + 10000;
+                    if(dronefuel < 10000)
+                    {
+                        dronefuel = dronefuel + 10000;
+                    }
+                    
+
                     isDroneFullFromMining = false;
                 }
             }
