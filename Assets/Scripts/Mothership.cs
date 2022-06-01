@@ -119,10 +119,9 @@ public class Mothership : MonoBehaviour {
         //Elite Forager & Forager
         if (asteroidsDiscorvered)  //This is always true after the first 3 Asteroids ever are discovered.
         {
-
             //Start elite droning 
             //(Re)Initialise elite Continuously
-            //!add our fittest drone How do you add fitness? Sor the drone base on fuel
+
             foreach (GameObject ast in resourceObjects) {
                     //if the Asteroid is not being forged
                     if (ast.GetComponent<Asteroid>().isBeingForaged == false)
@@ -215,6 +214,14 @@ public class Mothership : MonoBehaviour {
         //tested: passed
         totalMineCollected = totalMineCollected + mineCapacity;
         //Debug.Log("TotalMineCollected: " + totalMineCollected);
+    }
+
+    private void WarpAway()
+    {
+        if (totalMineCollected >= targetMineGoal)
+        {
+            //WarpAway...
+        }
     }
 
 }

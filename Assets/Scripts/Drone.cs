@@ -130,12 +130,11 @@ public class Drone : Enemy {
                 droneBehaviour = DroneBehaviours.Fleeing;
             }
 
-                
 
-            if (attackOrFlee >= 1000)
-                droneBehaviour = DroneBehaviours.Attacking;
-            else if (attackOrFlee < 2000)//1000
-                droneBehaviour = DroneBehaviours.Fleeing;
+            //if (attackOrFlee >= 1000)
+            //    droneBehaviour = DroneBehaviours.Attacking;
+            //else if (attackOrFlee < 2000)//1000
+            //    droneBehaviour = DroneBehaviours.Fleeing;
 
         }
         else
@@ -171,8 +170,6 @@ public class Drone : Enemy {
 
                 Fleeing();
                 break;
-
-
                 
         }
     }
@@ -480,13 +477,6 @@ public class Drone : Enemy {
     private void Foraging()
     {
         //normal foraging 
-        //one patch two drones max?
-        //three patches, each patch two drones max? 6 drones
-        //mine resource 
-
-        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
-        //send scout 4 max
-
         //===============================================
         //resourceObjects.Count from mothership
 
@@ -539,23 +529,12 @@ public class Drone : Enemy {
     private void EliteForaging()
     {
         //Debug.Log("Calling EliteForaging in Drone.cs");
-        //invesitigate the local area 
-        //if found better resource -> scout 
-        //mine resource 
 
-        //if no elite foragers find new resources -> neighbourhood shrinking 
-
-        //if foragers continously return no new resources after number of attempts -> abandon the site -> removing it from resource list
-        //send scout 4 max
 
 
         if (miningAsteroid.GetComponent<Asteroid>().isDepleted == true)//Do I need to change miningAsteroid?
         {
-            //topAsteroidCount in mothership should -1 
-            //Debug.Log("Is Asteroid depleted: " + miningAsteroid.GetComponent<Asteroid>().isDepleted);
-            //Debug.Log("Is Asteroid topAsteroidCount: " + motherShip.GetComponent<Mothership>().topAsteroidCount);
 
-            //motherShip.GetComponent<Mothership>().minustopAsteroidCount();//decease the topAsteroidCount back down otherwise only one elite drone 
             Debug.Log("Add Elite");
             motherShip.GetComponent<Mothership>().drones.Add(this.gameObject);
             motherShip.GetComponent<Mothership>().eliteForagers.Remove(this.gameObject);
@@ -578,13 +557,7 @@ public class Drone : Enemy {
                 MoveTowardsTarget(motherShip.transform.position);//on the way to MotherShip
                 Debug.DrawLine(transform.position, motherShip.transform.position, Color.red);
 
-                //how can I call a function just once here 
-
-                //on return trip 
-                //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
-                //miningAsteroid.GetComponent<Asteroid>().minusResource(10);//take 10 resource from Asteroid
                 
-                //In range of mothership, relay information and reset to drone again
                 if (Vector3.Distance(transform.position, motherShip.transform.position) < targetRadius)
                 {
                     //Debug.Log("Asteroid resource: " + miningAsteroid.GetComponent<Asteroid>().resource);
@@ -596,8 +569,6 @@ public class Drone : Enemy {
                 }
             }
         }
-
-        //droneBehaviour = DroneBehaviours.Idle;//<-----Elite won't show up
 
     }
 
@@ -622,4 +593,6 @@ public class Drone : Enemy {
         }
 
     }
+
+    
 }
